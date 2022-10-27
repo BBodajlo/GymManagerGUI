@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="605.0" prefWidth="375.0" style="-fx-background-color: #ef912e;"
+            xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.gymmanagergui.GymManagerController">
+   <left>
+      <Pane prefHeight="533.0" prefWidth="74.0" BorderPane.alignment="CENTER" />
+   </left>
+   <top>
+      <Pane prefHeight="58.0" prefWidth="378.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label layoutX="119.0" layoutY="14.0" prefHeight="24.0" prefWidth="157.0" text="Gym Manager">
+               <font>
+                  <Font name="Yu Gothic Medium" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+   </top>
+   <center>
+      <Pane prefHeight="492.0" prefWidth="231.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label layoutX="82.0" layoutY="1.0" prefHeight="27.0" prefWidth="89.0" text="Member">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Button fx:id="addMenuButton" layoutX="26.0" layoutY="58.0" mnemonicParsing="false" onAction="#memberAddMenu" text="Add" />
+            <Button fx:id="removeMemberButton" layoutX="153.0" layoutY="58.0" mnemonicParsing="false" onAction="#removeMemberMenu" text="Remove" />
+            <Label layoutX="85.0" layoutY="101.0" text="Check In">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="76.0" layoutY="202.0" text="Drop Class">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Button layoutX="26.0" layoutY="157.0" mnemonicParsing="false" text="Regular" />
+            <Button layoutX="163.0" layoutY="157.0" mnemonicParsing="false" text="Guest" />
+            <Button layoutX="26.0" layoutY="259.0" mnemonicParsing="false" text="Regular" />
+            <Button layoutX="163.0" layoutY="259.0" mnemonicParsing="false" text="Guest" />
+            <Label layoutX="89.0" layoutY="314.0" prefHeight="17.0" prefWidth="76.0" text="Loading">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Button layoutX="28.0" layoutY="365.0" mnemonicParsing="false" text="Classes" />
+            <Button layoutX="160.0" layoutY="365.0" mnemonicParsing="false" text="Members" />
+            <Label layoutX="76.0" layoutY="409.0" text="Information">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Button layoutX="86.0" layoutY="455.0" mnemonicParsing="false" text="Info Page" />
+         </children>
+      </Pane>
+   </center>
+   <right>
+      <Pane prefHeight="496.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+   </right>
+   <bottom>
+      <Pane prefHeight="51.0" prefWidth="387.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="exit" layoutX="177.0" layoutY="13.0" mnemonicParsing="false" onAction="#closeProgram" style="-fx-background-color: #FF0000;" text="Exit" />
+         </children>
+      </Pane>
+   </bottom>
+</BorderPane>
