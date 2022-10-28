@@ -4,9 +4,11 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -43,6 +45,15 @@
    <center>
       <StackPane fx:id="menuScreens" prefHeight="264.0" prefWidth="363.0" BorderPane.alignment="CENTER">
          <children>
+            <Pane fx:id="startScreen" prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="startButton" contentDisplay="CENTER" layoutX="77.0" layoutY="217.0" mnemonicParsing="false" onMouseClicked="#startGymManager" text="Start Gym Manager">
+                     <font>
+                        <Font size="36.0" />
+                     </font>
+                  </Button>
+               </children>
+            </Pane>
             <Pane fx:id="menuScreenButtons" prefHeight="492.0" prefWidth="231.0" visible="false">
                <children>
                   <Label alignment="CENTER" layoutX="181.0" layoutY="1.0" prefHeight="27.0" prefWidth="89.0" text="Member">
@@ -71,7 +82,7 @@
                      </font>
                   </Label>
                   <Button layoutX="109.0" layoutY="365.0" mnemonicParsing="false" text="Classes" />
-                  <Button layoutX="266.0" layoutY="365.0" mnemonicParsing="false" text="Members" />
+                  <Button fx:id="menuLoadMembers" layoutX="266.0" layoutY="365.0" mnemonicParsing="false" onMouseClicked="#goToLoadMembers" text="Members" />
                   <Label layoutX="162.0" layoutY="409.0" text="Information">
                      <font>
                         <Font size="18.0" />
@@ -81,7 +92,7 @@
                   <Button fx:id="addMenuButton" layoutX="117.0" layoutY="58.0" mnemonicParsing="false" onMouseClicked="#memberAddMenu" text="Add" />
                </children>
             </Pane>
-            <BorderPane fx:id="memberAddMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="511.0">
+            <BorderPane fx:id="memberAddMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="511.0" visible="false">
                <center>
                   <GridPane alignment="CENTER_LEFT" prefWidth="600.0" BorderPane.alignment="TOP_RIGHT">
                      <columnConstraints>
@@ -158,6 +169,21 @@
                   </GridPane>
                </center>
             </BorderPane>
+            <SplitPane fx:id="loadMembersScreen" dividerPositions="0.29797979797979796" focusTraversable="false" prefHeight="160.0" prefWidth="200.0" visible="false">
+              <items>
+                <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="160.0" minWidth="100.0" prefHeight="160.0" prefWidth="100.0" SplitPane.resizableWithParent="false">
+                     <children>
+                        <Button fx:id="loadMemberButton" layoutX="2.0" layoutY="28.0" mnemonicParsing="false" onMouseClicked="#loadMembers" text="Load Members" />
+                        <Button fx:id="loadMembersBackButton" layoutX="26.0" layoutY="99.0" mnemonicParsing="false" onMouseClicked="#loadMemBackToMenu" text="Menu" />
+                     </children>
+                  </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" SplitPane.resizableWithParent="false">
+                     <children>
+                        <TextArea fx:id="loadMemberTexaArea" editable="false" layoutX="-1.0" layoutY="-1.0" prefHeight="511.0" prefWidth="405.0" />
+                     </children>
+                  </AnchorPane>
+              </items>
+            </SplitPane>
          </children>
       </StackPane>
    </center>

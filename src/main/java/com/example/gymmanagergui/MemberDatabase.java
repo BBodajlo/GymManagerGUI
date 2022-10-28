@@ -294,6 +294,21 @@ public class MemberDatabase {
         return membersInDatabase;
     }
 
+    private void addMember(String[] person)
+    {
+        String firstName = person[0];
+        String lastName = person[1];
+        Date dob = new Date(person[2]);
+        Date expiration = new Date(person[3]);
+        Location location = Location.setLocation(person[4]);
+        Member newPerson = new Member(firstName, lastName, dob,
+                expiration,location);
+        if(dob.isValid() && dob.isAdult() && location != null
+                && this.find(newPerson) == -1 && expiration.isValidExpiration()){
+            this.add(newPerson);
+        }
+    }
+
 }
 
 

@@ -36,7 +36,13 @@ public class GymManagerController {
     private Pane menuScreenButtons;
     @FXML
     private BorderPane mainMenu;
-
+    @FXML
+    private Button menuLoadMembers;
+//Start Screen
+    @FXML
+    private Pane startScreen;
+    @FXML
+    private Button startButton;
 //Add member menu variables----------------------------
 
     @FXML
@@ -66,6 +72,12 @@ public class GymManagerController {
 
 
 //--------------------------------------------
+
+
+//Load Member Area
+    @FXML
+    private SplitPane loadMembersScreen;
+
     @FXML
     public void initialize()
     {
@@ -73,31 +85,28 @@ public class GymManagerController {
     }
 
     @FXML
+    public void startGymManager(){
+        startScreen.setVisible(false);
+        menuScreenButtons.setVisible(true);
+        menuScreens.setVisible(true);
+    }
+
+//Main Menu ----------------------------------------------------------------------------
+    @FXML
     public void memberAddMenu(MouseEvent event) throws IOException {
 
         menuScreenButtons.setVisible(false);
         memberAddMenu.setVisible(true);
-       /*
-
-        genericButton.setOnAction(e -> {
-            String tier;
-
-            if(rb1.isSelected()){
-                tier = "A";
-            } else if (rb2.isSelected()) {
-                tier = "AF";
-            }
-            else{
-                tier = "AP";
-            }
-            //*gymManager.addTieredMember( tf1.getText(), tf2.getText(), tf3.getText(),tier, tf4.getText());
-
-        });
-
-        */
 
     }
+    @FXML
+    public void goToLoadMembers(MouseEvent event) throws IOException {
 
+        menuScreenButtons.setVisible(false);
+        loadMembersScreen.setVisible(true);
+
+    }
+//Add Member Menu------------------------------------------------------------------------
     public void addMember(MouseEvent event) throws IOException{
         Member newPerson = null;
         String firstName = null;
@@ -181,7 +190,8 @@ public class GymManagerController {
         addMemberTextArea.appendText("Enter your first name\n");
 
     }
-public void addBackToMenu(MouseEvent event) throws IOException {
+    @FXML
+    public void addBackToMenu(MouseEvent event) throws IOException {
     menuScreenButtons.setVisible(true);
     memberAddMenu.setVisible(false);
     addMenuLastName.clear();
@@ -194,6 +204,18 @@ public void addBackToMenu(MouseEvent event) throws IOException {
 
 
 }
+//----------------------------------------------------------------------------------------
+
+//Load Member Screen-------------------------------------------------------------------------
+    @FXML
+    public void loadMemBackToMenu(MouseEvent e){
+    menuScreenButtons.setVisible(true);
+    loadMembersScreen.setVisible(false);
+
+}
+    public void loadMembers(MouseEvent event){
+
+    }
     public void removeMemberMenu(ActionEvent event) throws IOException {
         Stage stage = new Stage();
         GridPane pane = new GridPane();
