@@ -6,7 +6,12 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -24,9 +29,29 @@ public class GymManagerController {
     @FXML
     private Button addMenuButton;
 
-    public void memberAddMenu(ActionEvent event) throws IOException {
+    @FXML
+    private BorderPane mainMenu;
+    @FXML
+    private BorderPane memberAddMenu;
 
-        Stage stage = new Stage();
+    @FXML
+    private StackPane menuScreens;
+
+    @FXML
+    private Pane menuScreenButtons;
+    private Button addMenuBackButton;
+    public void initialize()
+    {
+
+    }
+
+    @FXML
+    public void memberAddMenu(MouseEvent event) throws IOException {
+
+        menuScreenButtons.setVisible(false);
+        memberAddMenu.setVisible(true);
+        menuScreens.setVisible(true);
+       /* Stage stage = new Stage();
         GridPane pane = new GridPane();
         pane.setAlignment(Pos.TOP_CENTER);
         pane.setHgap(5);
@@ -105,8 +130,16 @@ public class GymManagerController {
             //*gymManager.addTieredMember( tf1.getText(), tf2.getText(), tf3.getText(),tier, tf4.getText());
 
         });
-    }
 
+        */
+
+    }
+public void addBackToMenu(MouseEvent event) throws IOException {
+    menuScreenButtons.setVisible(true);
+    memberAddMenu.setVisible(false);
+    menuScreens.setVisible(false);
+
+}
     public void removeMemberMenu(ActionEvent event) throws IOException {
         Stage stage = new Stage();
         GridPane pane = new GridPane();

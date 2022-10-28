@@ -5,7 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
+import javafx.scene.control.Control;
 import java.io.IOException;
 
 public class GymManagerMain extends Application {
@@ -15,10 +15,10 @@ public class GymManagerMain extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         stg = stage;
-       // Parent root = FXMLLoader.load(GymManagerMain.class.getResource("GymManagerView" +
-       //         ".fxml"));
+        Parent root = FXMLLoader.load(GymManagerMain.class.getResource("GymManagerView" +
+                ".fxml"));
         FXMLLoader fxmlLoader = new FXMLLoader(GymManagerMain.class.getResource("GymManagerView.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 395, 650);
+        Scene scene = new Scene(fxmlLoader.load(), 600, 650);
         stage.setResizable(false);
         stage.setTitle("Gym Manager");
         stage.setScene(scene);
