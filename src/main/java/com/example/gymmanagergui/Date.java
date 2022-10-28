@@ -52,10 +52,10 @@ public class Date implements Comparable<Date> {
      */
     public Date(String date) {
         String[] holder = new String[3];
-        holder = date.split("/");
-        this.month = Integer.parseInt(holder[0]);
-        this.day = Integer.parseInt(holder[1]);
-        this.year = Integer.parseInt(holder[2]);
+        holder = date.split("-");
+        this.year = Integer.parseInt(holder[0]);
+        this.month = Integer.parseInt(holder[1]);
+        this.day = Integer.parseInt(holder[2]);
     }
 
     /**

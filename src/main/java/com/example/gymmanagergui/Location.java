@@ -43,7 +43,27 @@ public enum Location {
         this.COUNTY = c;
     }
 
+    public static Location setLocation(String loc) throws NullPointerException {
+        if (loc.toLowerCase().equals("bridgewater")) {
+            return Location.BRIDGEWATER;
+        }
+        else if (loc.toLowerCase().equals("edison")) {
+            return Location.EDISON;
+        }
+        else if (loc.toLowerCase().equals("franklin")) {
+            return Location.FRANKLIN;
+        }
+        else if (loc.toLowerCase().equals("piscataway")) {
+            return Location.PISCATAWAY;
+        }
+        else if (loc.toLowerCase().equals("somerville")) {
+            return Location.SOMERVILLE;
+        }
+        else{
+            throw new NullPointerException();
+        }
 
+    }
     /**
      * Get the Zip code for the location
      * @return The zip code

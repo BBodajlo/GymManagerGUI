@@ -6,6 +6,7 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -16,83 +17,7 @@
 
 <BorderPane fx:id="mainMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="605.0" prefWidth="600.0" style="-fx-background-color: #ef912e;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.gymmanagergui.GymManagerController">
    <left>
-      <Pane prefHeight="533.0" prefWidth="74.0" BorderPane.alignment="CENTER">
-         <children>
-            <StackPane fx:id="menuScreens" prefHeight="264.0" prefWidth="363.0" visible="false">
-               <children>
-                  <BorderPane fx:id="memberAddMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="500.0" visible="false">
-                     <center>
-                        <GridPane alignment="CENTER_LEFT" prefWidth="600.0" BorderPane.alignment="TOP_RIGHT">
-                           <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                           </columnConstraints>
-                           <rowConstraints>
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="61.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="109.0" minHeight="10.0" prefHeight="109.0" vgrow="SOMETIMES" />
-                           </rowConstraints>
-                           <children>
-                              <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="261.0" text="First Name">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Label>
-                              <TextField fx:id="addMenuFirstName" alignment="CENTER" promptText="Enter" text="First Name" GridPane.columnIndex="1" />
-                              <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="261.0" text="Last Name" GridPane.rowIndex="1">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Label>
-                              <TextField fx:id="addMenuLastName" alignment="CENTER" promptText="Enter" text="Last Name" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="261.0" text="Date of Birth" GridPane.rowIndex="2">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Label>
-                              <DatePicker fx:id="addMenuDOB" prefHeight="25.0" prefWidth="115.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-                              <RadioButton fx:id="addMemberStandard" mnemonicParsing="false" text="Standard" GridPane.halignment="CENTER" GridPane.rowIndex="4">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </RadioButton>
-                              <RadioButton fx:id="addMemberFamily" mnemonicParsing="false" text="Family" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="4">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </RadioButton>
-                              <RadioButton fx:id="addMemberPremium" mnemonicParsing="false" text="Premium" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </RadioButton>
-                              <Button fx:id="addMemberButton" mnemonicParsing="false" text="Add" GridPane.halignment="CENTER" GridPane.rowIndex="5">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Button>
-                              <TextArea fx:id="addMemberTextField" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                              <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="261.0" text="Location" GridPane.rowIndex="3">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Label>
-                              <TextField fx:id="addMenuLocation" alignment="CENTER" promptText="Enter" text="Location" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                              <Button fx:id="addMenuBackButton" alignment="TOP_LEFT" mnemonicParsing="false" onMousePressed="#addBackToMenu" text="Back" GridPane.halignment="LEFT" GridPane.valignment="TOP">
-                                 <font>
-                                    <Font size="10.0" />
-                                 </font>
-                              </Button>
-                           </children>
-                        </GridPane>
-                     </center>
-                  </BorderPane>
-               </children>
-            </StackPane>
-         </children></Pane>
+      <Pane prefHeight="533.0" prefWidth="74.0" BorderPane.alignment="CENTER" />
    </left>
    <top>
       <Pane prefHeight="58.0" prefWidth="378.0" BorderPane.alignment="CENTER">
@@ -105,46 +30,6 @@
          </children>
       </Pane>
    </top>
-   <center>
-      <Pane fx:id="menuScreenButtons" prefHeight="492.0" prefWidth="231.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label layoutX="181.0" layoutY="1.0" prefHeight="27.0" prefWidth="89.0" text="Member">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Button fx:id="removeMemberButton" layoutX="270.0" layoutY="58.0" mnemonicParsing="false" onAction="#removeMemberMenu" text="Remove" />
-            <Label layoutX="175.0" layoutY="100.0" text="Check In">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label layoutX="167.0" layoutY="208.0" text="Drop Class">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Button layoutX="108.0" layoutY="157.0" mnemonicParsing="false" text="Regular" />
-            <Button layoutX="276.0" layoutY="157.0" mnemonicParsing="false" text="Guest" />
-            <Button layoutX="108.0" layoutY="259.0" mnemonicParsing="false" text="Regular" />
-            <Button layoutX="276.0" layoutY="259.0" mnemonicParsing="false" text="Guest" />
-            <Label layoutX="171.0" layoutY="313.0" prefHeight="17.0" prefWidth="76.0" text="Loading">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Button layoutX="109.0" layoutY="365.0" mnemonicParsing="false" text="Classes" />
-            <Button layoutX="266.0" layoutY="365.0" mnemonicParsing="false" text="Members" />
-            <Label layoutX="162.0" layoutY="409.0" text="Information">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Button layoutX="176.0" layoutY="466.0" mnemonicParsing="false" text="Info Page" />
-            <Button fx:id="addMenuButton" layoutX="117.0" layoutY="58.0" mnemonicParsing="false" onMouseClicked="#memberAddMenu" text="Add" />
-         </children>
-      </Pane>
-   </center>
    <right>
       <Pane prefHeight="505.0" prefWidth="45.0" BorderPane.alignment="CENTER" />
    </right>
@@ -155,4 +40,125 @@
          </children>
       </Pane>
    </bottom>
+   <center>
+      <StackPane fx:id="menuScreens" prefHeight="264.0" prefWidth="363.0" BorderPane.alignment="CENTER">
+         <children>
+            <Pane fx:id="menuScreenButtons" prefHeight="492.0" prefWidth="231.0" visible="false">
+               <children>
+                  <Label alignment="CENTER" layoutX="181.0" layoutY="1.0" prefHeight="27.0" prefWidth="89.0" text="Member">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="removeMemberButton" layoutX="270.0" layoutY="58.0" mnemonicParsing="false" onAction="#removeMemberMenu" text="Remove" />
+                  <Label alignment="CENTER" layoutX="175.0" layoutY="100.0" text="Check In">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="167.0" layoutY="208.0" text="Drop Class">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Button layoutX="108.0" layoutY="157.0" mnemonicParsing="false" text="Regular" />
+                  <Button layoutX="276.0" layoutY="157.0" mnemonicParsing="false" text="Guest" />
+                  <Button layoutX="108.0" layoutY="259.0" mnemonicParsing="false" text="Regular" />
+                  <Button layoutX="276.0" layoutY="259.0" mnemonicParsing="false" text="Guest" />
+                  <Label layoutX="171.0" layoutY="313.0" prefHeight="17.0" prefWidth="76.0" text="Loading">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Button layoutX="109.0" layoutY="365.0" mnemonicParsing="false" text="Classes" />
+                  <Button layoutX="266.0" layoutY="365.0" mnemonicParsing="false" text="Members" />
+                  <Label layoutX="162.0" layoutY="409.0" text="Information">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Button layoutX="176.0" layoutY="466.0" mnemonicParsing="false" text="Info Page" />
+                  <Button fx:id="addMenuButton" layoutX="117.0" layoutY="58.0" mnemonicParsing="false" onMouseClicked="#memberAddMenu" text="Add" />
+               </children>
+            </Pane>
+            <BorderPane fx:id="memberAddMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="511.0">
+               <center>
+                  <GridPane alignment="CENTER_LEFT" prefWidth="600.0" BorderPane.alignment="TOP_RIGHT">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="61.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="109.0" minHeight="10.0" prefHeight="109.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <Label alignment="CENTER" prefHeight="17.0" prefWidth="261.0" text="First Name">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="addMenuFirstName" alignment="CENTER" onMouseEntered="#enterStringMessage" promptText="First Name" GridPane.columnIndex="1" />
+                        <Label alignment="CENTER" prefHeight="17.0" prefWidth="261.0" text="Last Name" GridPane.rowIndex="1">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="addMenuLastName" alignment="CENTER" promptText="Last Name" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label alignment="CENTER" prefHeight="17.0" prefWidth="261.0" text="Date of Birth" GridPane.rowIndex="2">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <DatePicker fx:id="addMenuDOB" prefHeight="25.0" prefWidth="115.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                        <RadioButton fx:id="addMemberStandard" mnemonicParsing="false" text="Standard" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <toggleGroup>
+                              <ToggleGroup fx:id="MemberShipType" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="addMemberFamily" mnemonicParsing="false" text="Family" toggleGroup="$MemberShipType" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </RadioButton>
+                        <RadioButton fx:id="addMemberPremium" mnemonicParsing="false" text="Premium" toggleGroup="$MemberShipType" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </RadioButton>
+                        <Button fx:id="addMemberButton" mnemonicParsing="false" onMouseClicked="#addMember" text="Add" GridPane.halignment="CENTER" GridPane.rowIndex="5">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Button>
+                        <TextArea fx:id="addMemberTextArea" editable="false" prefHeight="200.0" prefWidth="255.0" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="5" GridPane.rowSpan="2147483647">
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </TextArea>
+                        <Label alignment="CENTER" prefHeight="17.0" prefWidth="261.0" text="Location" GridPane.rowIndex="3">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="addMenuLocation" alignment="CENTER" promptText="Location" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Button fx:id="addMenuBackButton" alignment="TOP_LEFT" mnemonicParsing="false" onMousePressed="#addBackToMenu" text="Back" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </GridPane>
+               </center>
+            </BorderPane>
+         </children>
+      </StackPane>
+   </center>
 </BorderPane>

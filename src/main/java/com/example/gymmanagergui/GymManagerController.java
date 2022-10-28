@@ -21,28 +21,55 @@ import static com.example.gymmanagergui.GymManagerMain.stg;
 
 public class GymManagerController {
 
-    GymManager gymManager = new GymManager();
+    private MemberDatabase memberList;
 
+    private ClassSchedule fitnessClassDatabase;
+
+    GymManager gymManager = new GymManager();
+    String holder[] = new String[6];
 
     @FXML
     private Label welcomeText;
     @FXML
-    private Button addMenuButton;
-
-    @FXML
-    private BorderPane mainMenu;
-    @FXML
-    private BorderPane memberAddMenu;
-
-    @FXML
     private StackPane menuScreens;
-
     @FXML
     private Pane menuScreenButtons;
+    @FXML
+    private BorderPane mainMenu;
+
+//Add member menu variables----------------------------
+
+    @FXML
+    private BorderPane memberAddMenu;
+    @FXML
+    private Button addMenuButton;
+    @FXML
     private Button addMenuBackButton;
+    @FXML
+    private TextField addMenuFirstName;
+    @FXML
+    private TextField addMenuLastName;
+    @FXML
+    private TextField addMenuLocation;
+    @FXML
+    private DatePicker addMenuDOB;
+    @FXML
+    private RadioButton addMemberStandard;
+    @FXML
+    private RadioButton addMemberFamily;
+    @FXML
+    private RadioButton addMemberPremium;
+    @FXML
+    private Button addMemberButton;
+    @FXML
+    private TextArea addMemberTextArea;
+
+
+//--------------------------------------------
+    @FXML
     public void initialize()
     {
-
+        memberList = new MemberDatabase();
     }
 
     @FXML
@@ -50,71 +77,7 @@ public class GymManagerController {
 
         menuScreenButtons.setVisible(false);
         memberAddMenu.setVisible(true);
-        menuScreens.setVisible(true);
-       /* Stage stage = new Stage();
-        GridPane pane = new GridPane();
-        pane.setAlignment(Pos.TOP_CENTER);
-        pane.setHgap(5);
-        pane.setVgap(5);
-        pane.setPadding(new Insets(25, 25, 25, 25));
-
-        TextField tf1 = new TextField();
-        tf1.setPromptText("Enter the first name");
-        tf1.setFocusTraversable(false);
-        TextField tf2 = new TextField();
-        tf2.setPromptText("Enter the last name");
-        tf2.setFocusTraversable(false);
-        TextField tf3 = new TextField();
-        tf3.setPromptText("Enter the date of birth");
-        tf3.setFocusTraversable(false);
-        TextField tf4 = new TextField();
-        tf4.setPromptText("Enter the location");
-        tf4.setFocusTraversable(false);
-
-        TextField result = new TextField();
-        result.setEditable(false);
-        result.setPrefWidth(250);
-        result.setPrefHeight(200);
-
-        Label l1 = new Label("First Name:");
-        Label l2 = new Label("last Name:");
-        Label l3 = new Label("Date of Birth:");
-        Label l4 = new Label("Location:");
-
-        final ToggleGroup group = new ToggleGroup();
-
-        RadioButton rb1 = new RadioButton("Standard");
-        rb1.setToggleGroup(group);
-        rb1.setSelected(true);
-
-        RadioButton rb2 = new RadioButton("Family");
-        rb2.setToggleGroup(group);
-
-        RadioButton rb3 = new RadioButton("Premium");
-        rb3.setToggleGroup(group);
-
-        pane.add(l1, 0, 1);
-        pane.add(tf1, 1, 1);
-        pane.add(l2, 0, 2);
-        pane.add(tf2, 1, 2);
-        pane.add(l3, 0, 3);
-        pane.add(tf3, 1, 3);
-        pane.add(l4, 0, 4);
-        pane.add(tf4, 1, 4);
-        pane.add(rb1, 0, 5);
-        pane.add(rb2, 0, 6);
-        pane.add(rb3, 0, 7);
-        pane.add(result, 1, 15);
-
-
-        Button genericButton = new Button("Add");
-        pane.add(genericButton, 0, 10);
-
-        Scene scene = new Scene(pane, 375, 500);
-        stage.setTitle("Add Member");
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
+       /*
 
         genericButton.setOnAction(e -> {
             String tier;
@@ -134,10 +97,101 @@ public class GymManagerController {
         */
 
     }
+
+    public void addMember(MouseEvent event) throws IOException{
+        Member newPerson = null;
+        String firstName = null;
+        String lastName = null;
+        Date dob = null;
+        Location location = null;
+        try{
+            firstName = addMenuFirstName.getText();
+            lastName = addMenuLastName.getText();
+        }
+        catch(NullPointerException e)
+        {
+            addMemberTextArea.appendText("A field was left blank\n");
+            return;
+        }
+        try{
+            dob = new Date(addMenuDOB.getValue().toString());
+        }
+        catch(NullPointerException e)
+        {
+            addMemberTextArea.appendText("Date of Birth was invalid\n");
+            return;
+        }
+        try{
+            location = Location.setLocation(addMenuLocation.getText());
+        }
+        catch(NullPointerException e){
+            addMemberTextArea.appendText("Location was invalid\n");
+            return;
+
+        }
+
+
+        try{
+            if(addMemberStandard.isSelected()) {
+                newPerson = new Member(firstName, lastName, dob, location);
+            }
+            else if(addMemberFamily.isSelected()) {
+                newPerson = new Family(firstName, lastName, dob, location);
+            }
+            else if(addMemberPremium.isSelected()) {
+                newPerson = new Premium(firstName, lastName, dob, location);
+            }
+            if(newPerson == null)
+                throw new NullPointerException();
+        }
+        catch (NullPointerException e)
+        {
+            addMemberTextArea.appendText("Membership type was not selected\n");
+            return;
+        }
+
+        if(dob.isValid() && dob.isAdult() && memberList.find(newPerson) == -1){
+            memberList.add(newPerson);
+            addMemberTextArea.appendText(String.format("%s %s has been added\n",
+                    firstName, lastName));
+        }
+        else if(!dob.isPastButNotTodayOrPresent()) {
+            addMemberTextArea.appendText("DOB " + newPerson.getDateOfBirth().getDate() +":" +
+                    " cannot be today or a future date!\n");
+        }
+
+        else if(!dob.isAdult()) {
+            addMemberTextArea.appendText("DOB " + newPerson.getDateOfBirth().getDate() +":" +
+                    " must be 18 or older to join!\n");
+        }
+        else if(memberList.find(newPerson) != -1) {
+            addMemberTextArea.appendText(String.format("%s %s is already in " +
+                    "the data base\n", firstName, lastName));
+        }
+        else if(!dob.isValid()) {
+            addMemberTextArea.appendText(("DOB " + dob.getDate() + " Invalid " +
+                    "calendar date!\n"));
+        }
+
+
+
+    }
+
+    public void enterStringMessage(MouseEvent event) throws IOException{
+        addMemberTextArea.appendText("Enter your first name\n");
+
+    }
 public void addBackToMenu(MouseEvent event) throws IOException {
     menuScreenButtons.setVisible(true);
     memberAddMenu.setVisible(false);
-    menuScreens.setVisible(false);
+    addMenuLastName.clear();
+    addMenuFirstName.clear();
+    addMenuLocation.clear();
+    addMenuDOB.getEditor().clear();
+    addMemberStandard.setSelected(false);
+    addMemberFamily.setSelected(false);
+    addMemberPremium.setSelected(false);
+
 
 }
     public void removeMemberMenu(ActionEvent event) throws IOException {
