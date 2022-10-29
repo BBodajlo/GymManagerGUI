@@ -1,5 +1,9 @@
 package com.example.gymmanagergui;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 /**
  * MemberDatabase class creates a database comprised of a member array and the size.
  * The object creates a default member array of size 4.
@@ -34,6 +38,7 @@ public class MemberDatabase {
         }
 
     }
+
     /**
      * Print the members in the array as is but with fee.
      */
@@ -268,8 +273,7 @@ public class MemberDatabase {
             mlist[i] = holder[i];
         }
         this.size= this.size+4;
-    }
-    /**
+    }/**
      * Get the member database.
      * @return Return the member database.
      */
@@ -294,18 +298,28 @@ public class MemberDatabase {
         return membersInDatabase;
     }
 
-    private void addMember(String[] person)
-    {
-        String firstName = person[0];
-        String lastName = person[1];
-        Date dob = new Date(person[2]);
-        Date expiration = new Date(person[3]);
-        Location location = Location.setLocation(person[4]);
-        Member newPerson = new Member(firstName, lastName, dob,
-                expiration,location);
-        if(dob.isValid() && dob.isAdult() && location != null
-                && this.find(newPerson) == -1 && expiration.isValidExpiration()){
-            this.add(newPerson);
+    public void addMember(File members) throws FileNotFoundException {
+        String[] person;
+        Scanner input = new Scanner(members);
+        while(input.hasNextLine()) {
+            person = input.nextLine().split(" ");
+            if(!person[0].equals(""))
+            {
+
+                String firstName = person[0];
+                String lastName = person[1];
+                Date dob = new Date(person[2], true);
+                Date expiration = new Date(person[3], true);
+                Location location = Location.setLocation(person[4]);
+                System.out.println(String.format("%s %s %s %s",firstName,lastName,
+                        dob.getDate(), expiration.getDate()));
+                Member newPerson = new Member(firstName, lastName, dob,
+                        expiration,location);
+                if(dob.isValid() && dob.isAdult() && location != null
+                        && this.find(newPerson) == -1 && expiration.isValidExpiration()){
+                    this.add(newPerson);
+                }
+            }
         }
     }
 

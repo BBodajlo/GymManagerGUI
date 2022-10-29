@@ -57,6 +57,13 @@ public class Date implements Comparable<Date> {
         this.month = Integer.parseInt(holder[1]);
         this.day = Integer.parseInt(holder[2]);
     }
+    public Date(String date, boolean file) {
+        String[] holder = new String[3];
+        holder = date.split("/");
+        this.month = Integer.parseInt(holder[0]);
+        this.day = Integer.parseInt(holder[1]);
+        this.year = Integer.parseInt(holder[2]);
+    }
 
     /**
      * Chronologically Compares one date with the date that is passed

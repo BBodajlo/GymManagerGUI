@@ -12,9 +12,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Array;
 
 import static com.example.gymmanagergui.GymManagerMain.stg;
 
@@ -26,7 +30,7 @@ public class GymManagerController {
     private ClassSchedule fitnessClassDatabase;
 
     GymManager gymManager = new GymManager();
-    String holder[] = new String[6];
+    private boolean membersListLoaded;
 
     @FXML
     private Label welcomeText;
@@ -77,11 +81,16 @@ public class GymManagerController {
 //Load Member Area
     @FXML
     private SplitPane loadMembersScreen;
+    @FXML
+    private Button loadMemberButton;
+    @FXML
+    private TextArea loadMemberTextArea;
 
     @FXML
     public void initialize()
     {
         memberList = new MemberDatabase();
+        membersListLoaded = false;
     }
 
     @FXML
@@ -210,10 +219,46 @@ public class GymManagerController {
     @FXML
     public void loadMemBackToMenu(MouseEvent e){
     menuScreenButtons.setVisible(true);
+    loadMemberTextArea.clear();
     loadMembersScreen.setVisible(false);
 
+
 }
-    public void loadMembers(MouseEvent event){
+    public void loadMembers(MouseEvent event) throws IOException{
+
+        FileChooser file = new FileChooser();
+        file.setTitle("Select File");
+        file.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt"),
+                new FileChooser.ExtensionFilter("All Files", "*.*"));
+        Stage stage = new Stage();
+        File sourceFile = file.showOpenDialog(stage);
+
+        if(!membersListLoaded) {
+            try {
+                memberList.addMember(sourceFile);
+                loadMemberTextArea.appendText("------------------------------------------------------------\n");
+                for (Member member : memberList.getMlist()) {
+                    if (member != null)
+                        loadMemberTextArea.appendText(member.toString()+"\n");
+                    loadMemberTextArea.appendText("------------------------------------------------------------\n");
+                }
+
+                loadMemberTextArea.appendText("Member list loaded successfully!\n");
+                membersListLoaded = true;
+            } catch (FileNotFoundException e) {
+                loadMemberTextArea.appendText("No file was found");
+                return;
+            }
+            catch(NumberFormatException | NullPointerException | ArrayIndexOutOfBoundsException e)
+            {
+                loadMemberTextArea.appendText("File not formatted correctly\n");
+            }
+
+        }
+        else {
+            loadMemberTextArea.appendText("Member list already loaded!\n");
+        }
+
 
     }
     public void removeMemberMenu(ActionEvent event) throws IOException {
