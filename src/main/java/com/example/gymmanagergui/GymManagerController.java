@@ -31,6 +31,7 @@ public class GymManagerController {
 
     GymManager gymManager = new GymManager();
     private boolean membersListLoaded;
+    private boolean classesListLoaded;
 
     @FXML
     private Label welcomeText;
@@ -47,6 +48,8 @@ public class GymManagerController {
     private Pane startScreen;
     @FXML
     private Button startButton;
+    @FXML
+    private Button menuLoadClasses;
 //Add member menu variables----------------------------
 
     @FXML
@@ -85,12 +88,28 @@ public class GymManagerController {
     private Button loadMemberButton;
     @FXML
     private TextArea loadMemberTextArea;
+    @FXML
+    private Button loadMembersBackButton;
+    //------------------------------------------------------
 
+    //Load Classes Area
+    @FXML
+    private SplitPane loadClassesScreen;
+    @FXML
+    private Button loadClassesButton;
+    @FXML
+    private TextArea loadClassesTextArea;
+    @FXML
+    private Button loadClassesBackButton;
+
+// ----------------------------------------------------------------------
     @FXML
     public void initialize()
     {
         memberList = new MemberDatabase();
+        fitnessClassDatabase = new ClassSchedule();
         membersListLoaded = false;
+        classesListLoaded = false;
     }
 
     @FXML
@@ -100,12 +119,22 @@ public class GymManagerController {
         menuScreens.setVisible(true);
     }
 
+
+
+
 //Main Menu ----------------------------------------------------------------------------
     @FXML
     public void memberAddMenu(MouseEvent event) throws IOException {
 
         menuScreenButtons.setVisible(false);
         memberAddMenu.setVisible(true);
+
+    }
+    @FXML
+    public void goToLoadClasses(MouseEvent event) throws IOException {
+
+        menuScreenButtons.setVisible(false);
+        loadClassesScreen.setVisible(true);
 
     }
     @FXML
@@ -261,6 +290,47 @@ public class GymManagerController {
 
 
     }
+
+//-------------------------------------------------------------------------------------------------------------------
+    //Load Classes Code
+    @FXML
+    public void loadClassesBackToMenu(MouseEvent e) {
+        menuScreenButtons.setVisible(true);
+        loadClassesTextArea.clear();
+        loadClassesScreen.setVisible(false);
+    }
+    public void loadClasses(MouseEvent event) throws IOException{
+
+        FileChooser file = new FileChooser();
+        file.setTitle("Select File");
+        file.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt"),
+                new FileChooser.ExtensionFilter("All Files", "*.*"));
+        Stage stage = new Stage();
+        File sourceFile = file.showOpenDialog(stage);
+
+        if(!classesListLoaded) {
+            try {
+                fitnessClassDatabase.loadClasses(sourceFile);
+                loadClassesTextArea.appendText(fitnessClassDatabase.displaySchedule()+"\n");
+                loadClassesTextArea.appendText("Class list loaded successfully!\n");
+                classesListLoaded = true;
+            } catch (FileNotFoundException e) {
+                loadClassesTextArea.appendText("No file was found");
+                return;
+            }
+            catch(NumberFormatException | NullPointerException | ArrayIndexOutOfBoundsException e)
+            {
+                loadClassesTextArea.appendText("File not formatted correctly\n");
+            }
+
+        }
+        else {
+            loadClassesTextArea.appendText("Class list already loaded!\n");
+        }
+
+
+    }
+
     public void removeMemberMenu(ActionEvent event) throws IOException {
         Stage stage = new Stage();
         GridPane pane = new GridPane();

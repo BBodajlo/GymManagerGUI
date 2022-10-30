@@ -81,7 +81,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Button layoutX="109.0" layoutY="365.0" mnemonicParsing="false" text="Classes" />
+                  <Button fx:id="menuLoadClasses" layoutX="109.0" layoutY="365.0" mnemonicParsing="false" onMouseClicked="#goToLoadClasses" text="Classes" />
                   <Button fx:id="menuLoadMembers" layoutX="266.0" layoutY="365.0" mnemonicParsing="false" onMouseClicked="#goToLoadMembers" text="Members" />
                   <Label layoutX="162.0" layoutY="409.0" text="Information">
                      <font>
@@ -186,6 +186,25 @@
                      </children>
                   </AnchorPane>
               </items>
+            </SplitPane>
+            <SplitPane fx:id="loadClassesScreen" dividerPositions="0.20235756385068762" focusTraversable="false" layoutX="10.0" layoutY="10.0" prefHeight="510.0" prefWidth="566.0" visible="false">
+               <items>
+                  <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="160.0" minWidth="100.0" prefHeight="160.0" prefWidth="100.0" SplitPane.resizableWithParent="false">
+                     <children>
+                        <Button fx:id="loadClassesButton" layoutX="2.0" layoutY="28.0" mnemonicParsing="false" onMouseClicked="#loadClasses" text="Load Classes" />
+                        <Button fx:id="loadClassesBackButton" layoutX="26.0" layoutY="99.0" mnemonicParsing="false" onMouseClicked="#loadClassesBackToMenu" text="Menu" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" SplitPane.resizableWithParent="false">
+                     <children>
+                        <TextArea fx:id="loadClassesTextArea" editable="false" layoutX="-1.0" layoutY="-1.0" prefHeight="511.0" prefWidth="405.0" wrapText="true">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextArea>
+                     </children>
+                  </AnchorPane>
+               </items>
             </SplitPane>
          </children>
       </StackPane>

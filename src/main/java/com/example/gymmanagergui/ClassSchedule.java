@@ -1,4 +1,9 @@
 package com.example.gymmanagergui;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 /**
  * The ClassSchedule class manages the fitness classes; along with the
  * members and guests. Guest and members can be added or removed from a fitness class
@@ -222,4 +227,71 @@ public class ClassSchedule {
 
 
     }
+
+    public void loadClasses(File classes) throws FileNotFoundException {
+        String[] classDetails =  new String[4];
+        Scanner fileInput = new Scanner(classes);
+        while(fileInput.hasNextLine()) {
+            classDetails = fileInput.nextLine().split(" ");
+            if (!classDetails[0].equals("")) {
+                String classType = classDetails[0];
+                Instructor instructor = Instructor.valueOf(classDetails[1].toUpperCase());
+                Time time = Time.valueOf(classDetails[2].toUpperCase());
+                Location location = Location.valueOf(classDetails[3].toUpperCase());
+                FitnessClass newClass = new FitnessClass(classType, instructor, time, location);
+                this.addClass(newClass);
+            }
+        }
+
+    }
+
+    public String displaySchedule()
+    {
+        String schedule;
+        schedule = ("-Fitness Classes-\n");
+        for(FitnessClass c: this.getClasses())
+        {
+            if(c != null) {
+                schedule += (String.format("%s - %s, %s, %s\n", c.getClassType(), c.getInstructor()
+                        ,c.getTime().getTime(), c.getLocation()));
+                displayParticipants(c, schedule);
+            }
+        }
+        schedule += ("-end of class list-\n");
+        return schedule;
+    }
+
+    /**
+     * Shows the current participants of a fitness class
+     * Participants include both regular members and guests each have their own list
+     * Instances of family also print out their respective guest passes remaining
+     * @param currentClass Fitness class whose participants are being displayed
+     */
+    public void displayParticipants(FitnessClass currentClass, String schedule)
+    {
+        if(!currentClass.getParticipants().isEmpty()) {
+            schedule += ("- Participants -\n");
+            for (Member m : currentClass.getParticipants()) {
+                schedule += (m.toString()+ "\n");
+                if (m instanceof Premium) {
+                    schedule += ("(Premium) guest passes remaining " + ((Premium) m).getGuestPasses() + "\n");
+                } else if (m instanceof Family) {
+                    schedule += ("(Family) guest passes remaining " + ((Family) m).getGuestPasses()+ "\n");
+                }
+            }
+        }
+        if(!currentClass.getGuests().isEmpty()) {
+            schedule += ("- Guests -"+ "\n");
+            for (Member m : currentClass.getGuests()) {
+                schedule += (m.toString()+ "\n");
+                if (m instanceof Premium) {
+                    schedule += ("(Premium) guest passes remaining " + ((Premium) m).getGuestPasses() +"\n");
+                } else if (m instanceof Family) {
+                    schedule += ("(Family) guest passes remaining " + ((Family) m).getGuestPasses() + "\n");
+                }
+            }
+        }
+        schedule += "\n";
+    }
+
 }
