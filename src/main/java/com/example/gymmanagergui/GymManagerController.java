@@ -1,5 +1,6 @@
 package com.example.gymmanagergui;
 
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -52,6 +53,8 @@ public class GymManagerController {
     private Button menuLoadClasses;
     @FXML
     private Button removeMemberButton;
+    @FXML
+    private Button menuInfoButton;
 //Add member menu variables----------------------------
 
     @FXML
@@ -123,6 +126,29 @@ public class GymManagerController {
     private Button loadClassesBackButton;
 
 // ----------------------------------------------------------------------
+
+//Information Area---------------------------------------------------------
+
+    @FXML
+    private ComboBox loadMenuMemInfoCombo;
+    @FXML
+    private final String[] printMethods = {"Print", "Print By Fee", "Print By County", "Print By Name",
+            "Print By Expiration"};
+    @FXML
+    private BorderPane loadingMenu;
+    @FXML
+    private Tab loadMenuMemInfoTab;
+    @FXML
+    private Tab loadMenuClassInfoTab;
+
+
+
+
+
+
+
+
+//--------------------------------------------------------------------
     @FXML
     public void initialize()
     {
@@ -130,6 +156,7 @@ public class GymManagerController {
         fitnessClassDatabase = new ClassSchedule();
         membersListLoaded = false;
         classesListLoaded = false;
+       loadMenuMemInfoCombo.setItems(FXCollections.observableArrayList(printMethods));
     }
 
     @FXML
@@ -169,6 +196,13 @@ public class GymManagerController {
 
         menuScreenButtons.setVisible(false);
         loadMembersScreen.setVisible(true);
+
+    }
+    @FXML
+    public void goToInfo(MouseEvent event) throws IOException {
+
+        menuScreenButtons.setVisible(false);
+        loadingMenu.setVisible(true);
 
     }
 //Add Member Menu------------------------------------------------------------------------
@@ -334,7 +368,7 @@ public class GymManagerController {
     public void loadMemBackToMenu(MouseEvent e){
     menuScreenButtons.setVisible(true);
     loadMemberTextArea.clear();
-    loadMembersScreen.setVisible(false);
+    loadingMenu.setVisible(false);
 
 
 }
@@ -416,6 +450,23 @@ public class GymManagerController {
     }
 
 //------------------------------------------------------------------------------------------------
+
+//Information Text Code -------------------------------------------------------------------------
+    @FXML
+    public void informationMemBackToMenu(MouseEvent e) {
+        menuScreenButtons.setVisible(true);
+        loadingMenu.setVisible(false);
+    }
+
+
+    @FXML
+    public void loadMenuPrintMethod(MouseEvent e)
+    {
+
+    }
+
+
+//-----------------------------------------------------------------------------------------------
 
 
 
