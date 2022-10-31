@@ -127,7 +127,7 @@ public class GymManagerController {
 
 // ----------------------------------------------------------------------
 
-//Information Area---------------------------------------------------------
+//Information Member Area---------------------------------------------------------
 
     @FXML
     private ComboBox loadMenuMemInfoCombo;
@@ -140,15 +140,34 @@ public class GymManagerController {
     private Tab loadMenuMemInfoTab;
     @FXML
     private Tab loadMenuClassInfoTab;
-
-
-
-
-
-
+    @FXML
+    private TextArea loadMenuMemTextArea;
 
 
 //--------------------------------------------------------------------
+
+//Information Class Area-----------------------------------
+
+    @FXML
+    private ComboBox loadMenuClassInfoCombo;
+
+    @FXML
+    private final String[] printClasses = {"Schedule"};
+    @FXML
+    private TextArea loadMenuClassTextArea;
+    @FXML
+    private Button informationClassBackButton;
+
+
+
+
+
+
+
+
+//-----------------------------------------------------------------------------------
+
+
     @FXML
     public void initialize()
     {
@@ -157,6 +176,7 @@ public class GymManagerController {
         membersListLoaded = false;
         classesListLoaded = false;
        loadMenuMemInfoCombo.setItems(FXCollections.observableArrayList(printMethods));
+       loadMenuClassInfoCombo.setItems(FXCollections.observableArrayList(printClasses));
     }
 
     @FXML
@@ -368,7 +388,7 @@ public class GymManagerController {
     public void loadMemBackToMenu(MouseEvent e){
     menuScreenButtons.setVisible(true);
     loadMemberTextArea.clear();
-    loadingMenu.setVisible(false);
+    loadMembersScreen.setVisible(false);
 
 
 }
@@ -451,24 +471,74 @@ public class GymManagerController {
 
 //------------------------------------------------------------------------------------------------
 
-//Information Text Code -------------------------------------------------------------------------
+//Information Member Text Code
+// -------------------------------------------------------------------------
     @FXML
     public void informationMemBackToMenu(MouseEvent e) {
         menuScreenButtons.setVisible(true);
         loadingMenu.setVisible(false);
+        loadMenuMemTextArea.clear();
     }
 
 
     @FXML
-    public void loadMenuPrintMethod(MouseEvent e)
+    public void infoMenuPrintMethod(ActionEvent e)
     {
-
+       // {"Print", "Print By Fee", "Print By County", "Print By Name",
+        //        "Print By Expiration"};
+        //loadMenuMemTextArea.appendText(loadMenuMemInfoCombo.getValue().toString()+ "\n");
+        if(loadMenuMemInfoCombo.getValue().toString().equals("Print"))
+        {
+            loadMenuMemTextArea.clear();
+            loadMenuMemTextArea.appendText("\t--Printing by Order Added--");
+            loadMenuMemTextArea.appendText(memberList.print());
+        }
+        if(loadMenuMemInfoCombo.getValue().toString().equals("Print By Fee"))
+        {
+            loadMenuMemTextArea.clear();
+            loadMenuMemTextArea.appendText("\t--Printing by Fee--");
+            loadMenuMemTextArea.appendText(memberList.printWFee());
+        }
+        if(loadMenuMemInfoCombo.getValue().toString().equals("Print By County"))
+        {
+            loadMenuMemTextArea.clear();
+            loadMenuMemTextArea.appendText("\t--Printing by County--");
+            loadMenuMemTextArea.appendText(memberList.printByCounty());
+        }
+        if(loadMenuMemInfoCombo.getValue().toString().equals("Print By Name"))
+        {
+            loadMenuMemTextArea.clear();
+            loadMenuMemTextArea.appendText("\t--Printing by Name--");
+            loadMenuMemTextArea.appendText(memberList.printByName());
+        }
+        if(loadMenuMemInfoCombo.getValue().toString().equals("Print By Expiration"))
+        {
+            loadMenuMemTextArea.clear();
+            loadMenuMemTextArea.appendText("\t--Printing by Expiration--");
+            loadMenuMemTextArea.appendText(memberList.printByExpiration());
+        }
     }
 
 
 //-----------------------------------------------------------------------------------------------
 
+//
+    @FXML
+    public void informationClassBackToMenu(MouseEvent e) {
+        menuScreenButtons.setVisible(true);
+        loadingMenu.setVisible(false);
+        loadMenuClassTextArea.clear();
+    }
 
+    @FXML
+    public void infoMenuClassMethod(ActionEvent e)
+    {
+        if(loadMenuClassInfoCombo.getValue().toString().equals("Schedule"))
+        {
+            loadMenuClassTextArea.clear();
+            loadMenuClassTextArea.appendText(fitnessClassDatabase.displaySchedule());
+        }
+    }
 
 
 

@@ -30,40 +30,41 @@ public class MemberDatabase {
     /**
      * Print the members in the array as is.
      */
-    public void print() {
-
+    public String print() {
+        String message = "\n";
         for (Member member : mlist) {
             if (member != null)
-                System.out.println(member.toString());
+                message += (member.toString() + "\n");
         }
-
+        return message;
     }
 
     /**
      * Print the members in the array as is but with fee.
      */
-    public void printWFee() {
-
+    public String printWFee() {
+        String message = "\n";
         for (Member member : mlist) {
             if (member != null) {
-                System.out.println(member.toStringWFee());
+                message += (member.toStringWFee() + "\n");
                 if(member instanceof Premium) {
-                    System.out.println("(Premium) guest-pass remaining: " + ((Premium) member).getGuestPasses());
+                    message += ("(Premium) guest-pass remaining: " + ((Premium) member).getGuestPasses() + "\n");
                 }
                 else if (member instanceof Family)
                 {
-                    System.out.println("(Family) guest-pass remaining: " + ((Family) member).getGuestPasses());
+                    message += ("(Family) guest-pass remaining: " + ((Family) member).getGuestPasses() + "\n");
                 }
 
             }
         }
-
+        return message;
     }
     /**
      * Print the members in the array by name.
      */
-    public void printByName()
+    public String printByName()
     {
+        //String message = null;
         Member temporaryMember = new Member();
         int index;
         for(int i = 0; i<this.getNumberOfMembers(); i++)
@@ -80,12 +81,12 @@ public class MemberDatabase {
                 mlist[i] = temporaryMember;
             }
         }
-        this.print();
+        return this.print();
     }
     /**
      * Print the members in the array by membership expiration date.
      */
-    public void printByExpiration()
+    public String printByExpiration()
     {
         Member temporaryMember = new Member();
         int index;
@@ -103,12 +104,12 @@ public class MemberDatabase {
                 mlist[i] = temporaryMember;
             }
         }
-        this.print();
+        return this.print();
     }
     /**
      * Print the members in the array by County.
      */
-    public void printByCounty()
+    public String printByCounty()
     {
         Member temporaryMember = new Member();
         int index;
@@ -126,7 +127,7 @@ public class MemberDatabase {
                 mlist[i] = temporaryMember;
             }
         }
-        this.print();
+        return this.print();
     }
     /**
      * Print the members in the array by fee.
