@@ -50,6 +50,8 @@ public class GymManagerController {
     private Button startButton;
     @FXML
     private Button menuLoadClasses;
+    @FXML
+    private Button removeMemberButton;
 //Add member menu variables----------------------------
 
     @FXML
@@ -80,6 +82,24 @@ public class GymManagerController {
 
 //--------------------------------------------
 
+//Remove Member Area
+    @FXML
+    private BorderPane memberRemoveMenu;
+
+    @FXML
+    private TextField removeMenuFirstName;
+    @FXML
+    private TextField removeMenuLastName;
+    @FXML
+    private DatePicker removeMenuDOB;
+    @FXML
+    private Button removeButton;
+    @FXML
+    private TextArea removeMemberTextArea;
+    @FXML
+    private Button removeMenuBackButton;
+
+//--------------------------------------------------------------------------
 
 //Load Member Area
     @FXML
@@ -128,6 +148,13 @@ public class GymManagerController {
 
         menuScreenButtons.setVisible(false);
         memberAddMenu.setVisible(true);
+
+    }
+    @FXML
+    public void goToRemoveMenu(MouseEvent event) throws IOException {
+
+        menuScreenButtons.setVisible(false);
+        memberRemoveMenu.setVisible(true);
 
     }
     @FXML
@@ -239,11 +266,69 @@ public class GymManagerController {
     addMemberStandard.setSelected(false);
     addMemberFamily.setSelected(false);
     addMemberPremium.setSelected(false);
+    addMemberTextArea.clear();
 
 
 }
 //----------------------------------------------------------------------------------------
 
+    //Remove Member Code ---------------------------------------------------------------------------
+    @FXML
+    public void removeBackToMenu(MouseEvent e){
+        menuScreenButtons.setVisible(true);
+        removeMemberTextArea.clear();
+        memberRemoveMenu.setVisible(false);
+        removeMenuFirstName.clear();
+        removeMenuLastName.clear();
+        removeMenuDOB.getEditor().clear();
+
+
+
+    }
+    @FXML
+    public void removeMember(MouseEvent event) throws IOException {
+        Member personToRemove = null;
+        String firstName = null;
+        String lastName = null;
+        Date dob = null;
+
+        try{
+            firstName = removeMenuFirstName.getText();
+            lastName = removeMenuLastName.getText();
+        }
+        catch(NullPointerException e)
+        {
+            removeMemberTextArea.appendText("A field was left blank\n");
+            return;
+        }
+        try{
+            dob = new Date(removeMenuDOB.getValue().toString());
+        }
+        catch(NullPointerException e)
+        {
+            removeMemberTextArea.appendText("Date of Birth was invalid\n");
+            return;
+        }
+        personToRemove = new Member(firstName, lastName,dob);
+        boolean isInList = true;
+        for(Member m: memberList.getMlist())
+        {
+            if(m != null && personToRemove.equals(m))
+            {
+                memberList.remove(m);
+                removeMemberTextArea.appendText(firstName + " " + lastName + " " +
+                        "removed.\n");
+                isInList = false;
+                break;
+            }
+        }
+        if(isInList) {
+            removeMemberTextArea.appendText(firstName + " " + lastName + " is " +
+                    "not in the database\n");
+        }
+    }
+
+    //-------------------------------------------------------------------------------------------------------------------
 //Load Member Screen-------------------------------------------------------------------------
     @FXML
     public void loadMemBackToMenu(MouseEvent e){
@@ -291,7 +376,6 @@ public class GymManagerController {
 
     }
 
-//-------------------------------------------------------------------------------------------------------------------
     //Load Classes Code
     @FXML
     public void loadClassesBackToMenu(MouseEvent e) {
@@ -331,52 +415,12 @@ public class GymManagerController {
 
     }
 
-    public void removeMemberMenu(ActionEvent event) throws IOException {
-        Stage stage = new Stage();
-        GridPane pane = new GridPane();
-        pane.setAlignment(Pos.TOP_CENTER);
-        pane.setHgap(5);
-        pane.setVgap(5);
-        pane.setPadding(new Insets(25,25,25,25));
-
-        TextField tf1 = new TextField();
-        tf1.setPromptText("Enter the first name");
-        tf1.setFocusTraversable(false);
-        TextField tf2 = new TextField();
-        tf2.setPromptText("Enter the last name");
-        tf2.setFocusTraversable(false);
-        TextField tf3 = new TextField();
-        tf3.setPromptText("Enter the date of birth");
-        tf3.setFocusTraversable(false);
-
-        TextField result = new TextField();
-        result.setEditable(false);
-        result.setPrefWidth(270);
-        result.setPrefHeight(250);
-
-        Label l1 = new Label("First Name:");
-        Label l2 = new Label("last Name:");
-        Label l3 = new Label("Date of Birth:");
-
-        pane.add(l1, 0, 1);
-        pane.add(tf1, 1, 1);
-        pane.add(l2, 0, 2);
-        pane.add(tf2, 1, 2);
-        pane.add(l3, 0, 3);
-        pane.add(tf3, 1, 3);
-        pane.add(result, 1, 20);
+//------------------------------------------------------------------------------------------------
 
 
-        Button genericButton = new Button("Remove");
-        pane.add(genericButton, 0, 9);
 
-        Scene scene = new Scene(pane, 375, 550);
-        stage.setTitle("Remove Member");
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
 
-    }
+
 
     public void closeProgram(ActionEvent event) throws IOException {
         stg.close();
