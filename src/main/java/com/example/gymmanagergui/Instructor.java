@@ -19,6 +19,7 @@ public enum Instructor {
     EMMA;
 
 
+
     /**
      * Takes a string and sees if it is equal to a valid instructor
      * @param instructor String representation of an instructor

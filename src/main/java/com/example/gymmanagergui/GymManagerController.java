@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.util.Arrays;
 
 import static com.example.gymmanagergui.GymManagerMain.stg;
 
@@ -55,6 +56,8 @@ public class GymManagerController {
     private Button removeMemberButton;
     @FXML
     private Button menuInfoButton;
+    @FXML
+    private Button menuRegularCheckInButton;
 //Add member menu variables----------------------------
 
     @FXML
@@ -103,6 +106,38 @@ public class GymManagerController {
     private Button removeMenuBackButton;
 
 //--------------------------------------------------------------------------
+
+//Check In Regular Area
+
+    @FXML
+    private BorderPane checkInScreen;
+    @FXML
+    private TextField checkInFirstName;
+    @FXML
+    private TextField checkInLastName;
+    @FXML
+    private ComboBox locationComboBox;
+    @FXML
+    private ComboBox instructorComboBox;
+    @FXML
+    private RadioButton checkInRegCardio;
+    @FXML
+    private RadioButton checkInRegPilates;
+    @FXML
+    private RadioButton checkInRegSpinning;
+    @FXML
+    private Button checkInBackButton;
+    @FXML
+    private DatePicker checkInDOB;
+    @FXML
+    private Button checkInButton;
+    @FXML
+    private TextArea checkInTextArea;
+
+
+
+
+
 
 //Load Member Area
     @FXML
@@ -160,11 +195,6 @@ public class GymManagerController {
 
 
 
-
-
-
-
-
 //-----------------------------------------------------------------------------------
 
 
@@ -177,6 +207,10 @@ public class GymManagerController {
         classesListLoaded = false;
        loadMenuMemInfoCombo.setItems(FXCollections.observableArrayList(printMethods));
        loadMenuClassInfoCombo.setItems(FXCollections.observableArrayList(printClasses));
+       //locationComboBox.setItems(FXCollections.observableArrayList(Location.values()));
+       instructorComboBox.setItems(FXCollections.observableArrayList(Instructor.values()));
+
+       // System.out.println(Location.values());
     }
 
     @FXML
@@ -202,6 +236,13 @@ public class GymManagerController {
 
         menuScreenButtons.setVisible(false);
         memberRemoveMenu.setVisible(true);
+
+    }
+    @FXML
+    public void goToCheckIn(MouseEvent event) throws IOException {
+
+        menuScreenButtons.setVisible(false);
+        checkInScreen.setVisible(true);
 
     }
     @FXML
@@ -255,8 +296,8 @@ public class GymManagerController {
         catch(NullPointerException e){
             addMemberTextArea.appendText("Location was invalid\n");
             return;
-
         }
+
 
 
         try{
@@ -383,7 +424,112 @@ public class GymManagerController {
     }
 
     //-------------------------------------------------------------------------------------------------------------------
-//Load Member Screen-------------------------------------------------------------------------
+
+//Check In Code----------------
+    @FXML
+    public void checkInToMenu(MouseEvent e){
+        menuScreenButtons.setVisible(true);
+        checkInScreen.setVisible(false);
+
+    }
+
+    @FXML
+    public void checkInInstructorComboBoxMethod(ActionEvent e)
+    {
+
+        if(instructorComboBox.getValue().equals(Instructor.EMMA))
+        {
+            locationComboBox.setItems(FXCollections.observableArrayList(fitnessClassDatabase.getInstructorLocations(Instructor.EMMA)));
+        }
+        if(instructorComboBox.getValue().equals(Instructor.DAVIS))
+        {
+            locationComboBox.setItems(FXCollections.observableArrayList(fitnessClassDatabase.getInstructorLocations(Instructor.DAVIS)));
+        }
+        if(instructorComboBox.getValue().equals(Instructor.DENISE))
+        {
+            locationComboBox.setItems(FXCollections.observableArrayList(fitnessClassDatabase.getInstructorLocations(Instructor.DENISE)));
+        }
+        if(instructorComboBox.getValue().equals(Instructor.JENNIFER))
+        {
+            locationComboBox.setItems(FXCollections.observableArrayList(fitnessClassDatabase.getInstructorLocations(Instructor.JENNIFER)));
+        }
+        if(instructorComboBox.getValue().equals(Instructor.KIM))
+        {
+            locationComboBox.setItems(FXCollections.observableArrayList(fitnessClassDatabase.getInstructorLocations(Instructor.KIM)));
+        }
+    }
+
+
+    @FXML
+    public void checkInMember(MouseEvent a)
+    {
+        String fitnessClassType = null;
+        String instructor = null;
+        String location =null;
+        String firstName = null;
+        String lastName =null;
+        Date dob = null;
+        String[] person = new String[7];
+        try{
+            firstName = checkInFirstName.getText();
+            lastName = checkInLastName.getText();
+            person[4] = firstName;
+            person[5] = lastName;
+        }
+        catch(NullPointerException e)
+        {
+            checkInTextArea.appendText("Name fields are incomplete");
+        }
+
+        try{
+            dob = new Date(checkInDOB.getValue().toString());
+            person[6] = checkInDOB.getValue().toString();
+        }
+        catch(NullPointerException  | ArrayIndexOutOfBoundsException e)
+        {
+            checkInTextArea.appendText("Date field is incorrect");
+        }
+        try{
+            instructor = instructorComboBox.getValue().toString();
+            location = locationComboBox.getValue().toString();
+            person[2] = instructor;
+            person[3]= location;
+        }
+        catch(NullPointerException e)
+        {
+            checkInTextArea.appendText("Instructor or Location field is blank");
+        }
+        try{
+            if(checkInRegPilates.isSelected())
+            {
+                fitnessClassType = "Pilates";
+                person[1] = fitnessClassType;
+            }
+            else if(checkInRegCardio.isSelected())
+            {
+                fitnessClassType = "Cardio";
+                person[1] = fitnessClassType;
+            }
+            else if(checkInRegSpinning.isSelected())
+            {
+                fitnessClassType = "Spinning";
+                person[1] = fitnessClassType;
+            }
+            else {
+                throw new NullPointerException();
+            }
+
+        }
+        catch(NullPointerException e)
+        {
+            checkInTextArea.appendText("No class type was selected");
+        }
+
+        checkInTextArea.appendText(fitnessClassDatabase.checkIn(person, false, memberList, fitnessClassDatabase));
+
+    }
+
+    //Load Member Screen-------------------------------------------------------------------------
     @FXML
     public void loadMemBackToMenu(MouseEvent e){
     menuScreenButtons.setVisible(true);

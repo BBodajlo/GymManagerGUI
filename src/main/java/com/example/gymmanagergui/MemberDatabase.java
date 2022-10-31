@@ -323,6 +323,23 @@ public class MemberDatabase {
             }
         }
     }
+    /**
+     * Used by removedFromFitness and checkIn method to get the members in the database.
+     * @param member Member to compare to the member in database.
+     * @return Returns the member in the member list is equal to the member given. Else
+     * return the member given.
+     */
+    public Member getMember(Member member)
+    {
+        for(Member m: this.getMlist())
+        {
+            if(m != null && m.equals(member))
+            {
+                return m;
+            }
+        }
+        return member;
+    }
 
 }
 

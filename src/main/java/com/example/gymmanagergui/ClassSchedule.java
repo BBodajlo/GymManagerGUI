@@ -13,6 +13,9 @@ import java.util.Scanner;
 public class ClassSchedule {
     private FitnessClass[] classes;
     private int numClasses;
+    private String message;
+    private final int MAX_CLASSES = 3;
+    private final int MAX_INSTRUCTORS = 5;
 
     /**
      * Initialized ClassSchedule creates a FitnessClass array setting the size to 4.
@@ -292,6 +295,275 @@ public class ClassSchedule {
             }
         }
         schedule += "\n";
+        //return schedule;
     }
 
+    public Location[] getInstructorLocations(Instructor i)
+    {
+        Location[] instructorLocations = new Location[MAX_CLASSES];
+        int index = 0;
+        for(FitnessClass f: this.classes)
+        {
+            if(f != null && f.getInstructor() == i)
+            {
+                if(!isInInstructorLocationArray(instructorLocations, f.getLocation()))
+                {
+                    instructorLocations[index] = f.getLocation();
+                    index++;
+
+                }
+            }
+        }
+        Location[] instructorLocationsFinal = new Location[index];
+        for(int j = 0; j < index; j++)
+        {
+            instructorLocationsFinal[j] = instructorLocations[j];
+        }
+
+        return instructorLocationsFinal;
+    }
+    private boolean isInInstructorLocationArray(Location[] locations, Location toBeAdded)
+    {
+        for(int i = 0; i < MAX_CLASSES; i++)
+        {
+            if(toBeAdded == locations[i])
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    public Instructor[] getLocationInstructors(Location l)
+    {
+        Instructor[] locationInstructors = new Instructor[MAX_INSTRUCTORS];
+        int index = 0;
+        for(FitnessClass f: this.classes)
+        {
+            if(f != null && f.getLocation() == l)
+            {
+                System.out.println(f.getLocation());
+                if(!isInLocationInstructorArray(locationInstructors, f.getInstructor()))
+                {
+                    locationInstructors[index] = f.getInstructor();
+                    index++;
+
+                }
+            }
+        }
+        Instructor[] locationInstructorsFinal = new Instructor[index];
+        for(int j = 0; j < index; j++)
+        {
+            locationInstructorsFinal[j] = locationInstructors[j];
+        }
+
+        return locationInstructorsFinal;
+    }
+    private boolean isInLocationInstructorArray(Instructor[] instructors, Instructor toBeAdded)
+    {
+        for(int i = 0; i < MAX_INSTRUCTORS; i++)
+        {
+            if(toBeAdded == instructors[i])
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    /**
+     * Check in members into their desired fitness class. A member can not check if
+     * the membership has expired, the member does not exist, the date of birth is invalid,
+     * the fitness class does not exist, there is a time conflict with other fitness classes,
+     * or the member has already checked in.
+     * This method is invoked by the run method, when the user inputs "C" or "CG".
+     * @param person A person that will be checked into the fitness class.
+     * @param isGuest A person is either a guest or not a guest effecting implementation
+     */
+    public String checkIn(String[] person, boolean isGuest, MemberDatabase mlist,
+                        ClassSchedule fitnessClassDatabase) {
+        String fitnessClassType = person[1];
+        String instructor = person[2];
+        String location = person[3];
+        String firstName = person[4];
+        String lastName = person[5];
+        Date dob = new Date(person[6]);
+        message = "";
+        Member newPerson = new Member(firstName, lastName, dob);
+        Member actualMember = mlist.getMember(newPerson);
+        if (!checkMemberForClass(actualMember, fitnessClassType, location, instructor, isGuest,
+                fitnessClassDatabase, mlist)) {
+        }
+        else {
+            FitnessClass currentClass = fitnessClassDatabase.getFitnessClass(instructor, location, fitnessClassType);
+            Location loc = Location.setLocation(location);
+            assert loc != null;
+            if (actualMember instanceof Family && isGuest) {
+                if (((Family) actualMember).getGuestPasses() == 0) {
+                    message += (String.format("%s %s ran out of guest passes\n",
+                            actualMember.getFname(), actualMember.getLName()));
+                }
+                else{
+                    if(actualMember.getLocation() == currentClass.getLocation())
+                    {
+                        currentClass.addToGuestClass(actualMember);
+                        actualMember.useGuestPass();
+                        message += (String.format("%s %s (guest) checked in %s - %s, " +
+                                        "%s, %s\n",
+                                actualMember.getFname(), actualMember.getLName(), currentClass.getClassType(),
+                                currentClass.getInstructor(),
+                                currentClass.getTime().getTime(), currentClass.getLocation()));
+                        displayParticipants(currentClass, message);
+                    }
+                    else{
+                        message += (String.format("%s %s checking in %s, %s, %s - guest" +
+                                        " location restriction\n",
+                                actualMember.getFname(), actualMember.getLName(),
+                                loc, loc.getZIP(), actualMember.getLocation().getCOUNTY()));
+                    }
+
+                }
+            }
+            else if (actualMember instanceof Family) {
+                message += String.format("%s %s checked in %s - %s, %s, %s\n",
+                        actualMember.getFname(), actualMember.getLName(), currentClass.getClassType(),
+                        currentClass.getInstructor(), currentClass.getTime().getTime(),
+                        currentClass.getLocation());
+                currentClass.addToClass(actualMember);
+                displayParticipants(currentClass, message);
+            }
+            else if(isGuest)
+            {
+                message += ("Standard membership - guest check-in is not allowed.\n");
+            }
+            else if (!actualMember.getLocation().toString().equalsIgnoreCase(location)) {
+                message += (String.format("%s %s checking in %s, %s, %s - standard membership " +
+                                "location restriction\n",
+                        actualMember.getFname(), actualMember.getLName(),
+                        loc, loc.getZIP(), actualMember.getLocation().getCOUNTY()));
+            } else if (actualMember.getLocation().toString().equalsIgnoreCase(location)) {
+                message += (String.format("%s %s checked in %s - %s, %s, %s\n",
+                        actualMember.getFname(), actualMember.getLName(), currentClass.getClassType(),
+                        currentClass.getInstructor(),
+                        currentClass.getTime().getTime(), currentClass.getLocation()));
+                currentClass.addToClass(actualMember);
+                displayParticipants(currentClass, message);
+            }
+        }
+        System.out.println("here");
+        System.out.println(message);
+        return message;
+    }
+    /**
+     * Used to check if a member is already in their desired fitness class, and
+     * whatever their date of birth and expiration date is valid.
+     * A member can not be added if they are already in the fitness class or
+     * be removed if they are not in the fitness class to begin with.
+     * @param member The member that is checked to see if they are in a fitness class or not.
+     * @param classType The fitness class that is being checked for said member.
+     * @param location Location of the member
+     * @param instuctor Instructor of the fitness class being checked into
+     * @param isGuest A person is either a guest or not a guest
+     * @return Returns true if the member is already in the fitness class,
+     * else return false.
+     */
+    private boolean checkMemberForClass(Member member,
+                                        String classType, String location, String instuctor,
+                                        boolean isGuest, ClassSchedule fitnessClassDatabase,
+                                        MemberDatabase  memberList)
+    {
+
+        if(member.getDateOfBirth().isValid() && member.getDateOfBirth().isAdult()
+                && memberList.find(member) != -1 && member.getExpiration().isValidExpiration()
+                && !member.getExpiration().isPastButNotTodayOrPresent()
+                && FitnessClass.checkIfActualClass(classType) && Instructor.isValidInstructor(instuctor)
+                && fitnessClassDatabase.isValidLocationForInstructor(instuctor, location, classType)
+                && Location.setLocation(location) != null && checkMemberValidLocation(member, location)) {
+            if(fitnessClassDatabase.isCheckedIn(member) && !isGuest) {
+                return compareClassCheckIn(fitnessClassDatabase.getMemberClass(member), location,
+                        instuctor, member, classType, fitnessClassDatabase);
+            }
+            return true;
+        }
+        else if(!FitnessClass.checkIfActualClass(classType)) {
+            message += (classType + " class does not exist.\n");
+        }
+        else if(!member.getDateOfBirth().isValid()) {
+            message += ("DOB " + member.getDateOfBirth().getDate() + " invalid calendar date!\n");
+        }
+
+        else if(!Instructor.isValidInstructor(instuctor)) {
+            message += (instuctor + " - instructor does not exist\n");
+        }
+        else if(Location.setLocation(location) == null) {
+            message += (location + " - invalid location.\n");
+        }
+        else if(!fitnessClassDatabase.isValidLocationForInstructor(instuctor, location, classType))
+        {
+            message += (String.format("%s by %s does not exist at %s\n", classType,
+                    instuctor, location));
+        }
+        else if(memberList.find(member) == -1) {
+            message += (String.format("%s %s is not in the gym member database\n",
+                    member.getFname(), member.getLName()));
+        }
+        else if(!member.getExpiration().isValidExpiration()){
+            message += ("Expiration date " + member.getExpiration().getDate() + ": invalid " +
+                    "calendar date\n");
+        }
+        else if(member.getExpiration().isValidExpiration() && member.getExpiration().isPastButNotTodayOrPresent()){
+            message += ("Expiration date " + member.getDateOfBirth().getDate() + ": " +
+                    "has expired\n");
+        }
+        else{
+            return true;
+        }
+        return false;
+    }
+    private boolean compareClassCheckIn(FitnessClass currentClass, String location,
+                                        String instructor, Member member, String classType,
+                                        ClassSchedule fitnessClassDatabase){
+        if(Location.setLocation(location) == null)
+        {
+            message += (location + " - invalid location.\n");
+            return false;
+        }
+        if(location.equalsIgnoreCase(currentClass.getLocation().toString()) && instructor.equalsIgnoreCase(currentClass.getInstructor().toString()) && classType.equalsIgnoreCase(currentClass.getClassType()))
+        {
+            message += (String.format("%s %s already checked in\n",member.getFname(),
+                    member.getLName()));
+            return false;
+        }
+        else if(fitnessClassDatabase.isValidLocationForInstructor(instructor, location, classType) && !fitnessClassDatabase.memberIsInClass(instructor, classType,location, member))
+        {
+            FitnessClass classToCompare = fitnessClassDatabase.getFitnessClass(instructor, location, classType);
+            if(currentClass.getTime() == classToCompare.getTime())
+            {
+                message += (String.format("Time conflict - %s - %s, %s, %s, %s, %s\n",
+                        classToCompare.getClassType(),
+                        classToCompare.getInstructor(), classToCompare.getTime().getTime(),
+                        classToCompare.getLocation(),classToCompare.getLocation().getZIP(),
+                        classToCompare.getLocation().getCOUNTY()));
+                return false;
+            }
+            else {
+                return true;
+            }
+
+        }
+
+
+
+        return false;
+    }
+    private boolean checkMemberValidLocation(Member member, String location)
+    {
+        if(member instanceof Family)
+        {
+            return true;
+        }
+        else if(!member.getLocation().toString().equalsIgnoreCase(location)){
+            return false;
+        }
+        return true;
+
+    }
 }
