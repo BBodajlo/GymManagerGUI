@@ -3,13 +3,9 @@ package com.example.gymmanagergui;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
@@ -19,24 +15,26 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.Arrays;
+
 
 import static com.example.gymmanagergui.GymManagerMain.stg;
 
-
+/**
+ * GymManagerController controls of the graphic user interface
+ * for the gym manager application. It manages the action of the buttons and layouts of
+ * the application. There are menus such as main, member, check in, drop, loading, and information
+ * that are being managed.
+ * @author Blake Bodajlo, Stanley Jiang
+ */
 public class GymManagerController {
 
     private MemberDatabase memberList;
 
     private ClassSchedule fitnessClassDatabase;
 
-    GymManager gymManager = new GymManager();
     private boolean membersListLoaded;
     private boolean classesListLoaded;
 
-    @FXML
-    private Label welcomeText;
     @FXML
     private StackPane menuScreens;
     @FXML
@@ -197,7 +195,9 @@ public class GymManagerController {
 
 //-----------------------------------------------------------------------------------
 
-
+    /**
+     * Initializes the application, by creating empty databases for members and fitness classes.
+     */
     @FXML
     public void initialize()
     {
@@ -213,6 +213,9 @@ public class GymManagerController {
        // System.out.println(Location.values());
     }
 
+    /**
+     * Used by the "Start Gym Manager" button to show the main menu.
+     */
     @FXML
     public void startGymManager(){
         startScreen.setVisible(false);
@@ -221,9 +224,11 @@ public class GymManagerController {
     }
 
 
-
-
 //Main Menu ----------------------------------------------------------------------------
+    /**
+     * Used by the "Member's add" button to show the add member menu.
+     * @param event When the user clicks on the button.
+     */
     @FXML
     public void memberAddMenu(MouseEvent event) throws IOException {
 
@@ -231,6 +236,10 @@ public class GymManagerController {
         memberAddMenu.setVisible(true);
 
     }
+    /**
+     * Used by the "Member's Remove" button to show the remove member menu.
+     * @param event When the user clicks on the button.
+     */
     @FXML
     public void goToRemoveMenu(MouseEvent event) throws IOException {
 
@@ -238,6 +247,10 @@ public class GymManagerController {
         memberRemoveMenu.setVisible(true);
 
     }
+    /**
+     * Used by the "Check in" button to show the check in menu.
+     * @param event When the user clicks on the button.
+     */
     @FXML
     public void goToCheckIn(MouseEvent event) throws IOException {
 
@@ -245,6 +258,10 @@ public class GymManagerController {
         checkInScreen.setVisible(true);
 
     }
+    /**
+     * Used by the "Loading's Classes" button to show the load class menu.
+     * @param event When the user clicks on the button.
+     */
     @FXML
     public void goToLoadClasses(MouseEvent event) throws IOException {
 
@@ -252,6 +269,10 @@ public class GymManagerController {
         loadClassesScreen.setVisible(true);
 
     }
+    /**
+     * Used by the "Loading's Member" button to show the load member menu.
+     * @param event When the user clicks on the button.
+     */
     @FXML
     public void goToLoadMembers(MouseEvent event) throws IOException {
 
@@ -259,6 +280,10 @@ public class GymManagerController {
         loadMembersScreen.setVisible(true);
 
     }
+    /**
+     * Used by the "Info Page" button to show the info page menu.
+     * @param event When the user clicks on the button.
+     */
     @FXML
     public void goToInfo(MouseEvent event) throws IOException {
 
@@ -267,6 +292,12 @@ public class GymManagerController {
 
     }
 //Add Member Menu------------------------------------------------------------------------
+    /**
+     * Invoked by the "Add" button in the add member menu; which adds a member
+     * based on the information provided in the text fields. Information includes
+     * first name, last name, location, date of birth, and type of membership.
+     * @param event When the user clicks on the button.
+     */
     public void addMember(MouseEvent event) throws IOException{
         Member newPerson = null;
         String firstName = null;
@@ -345,11 +376,20 @@ public class GymManagerController {
 
 
     }
-
+    /**
+     * Notifies the user to enter their first name, when they hover over
+     * the first name text field.
+     * @param event When the user hovers over the text field.
+     */
     public void enterStringMessage(MouseEvent event) throws IOException{
         addMemberTextArea.appendText("Enter your first name\n");
 
     }
+    /**
+     * Used by the "Back" button in the add member menu to go back to
+     * the main menu.
+     * @param event When the user clicks on the button.
+     */
     @FXML
     public void addBackToMenu(MouseEvent event) throws IOException {
     menuScreenButtons.setVisible(true);
@@ -368,6 +408,11 @@ public class GymManagerController {
 //----------------------------------------------------------------------------------------
 
     //Remove Member Code ---------------------------------------------------------------------------
+    /**
+     * Used by the "Back" button in the remove member menu to go back to
+     * the main menu.
+     * @param e When the user clicks on the button.
+     */
     @FXML
     public void removeBackToMenu(MouseEvent e){
         menuScreenButtons.setVisible(true);
@@ -377,9 +422,14 @@ public class GymManagerController {
         removeMenuLastName.clear();
         removeMenuDOB.getEditor().clear();
 
-
-
     }
+
+    /**
+     * Invoked by the "Remove" button in the remove member menu; which removes a member
+     * based on the information provided in the text fields. Information includes
+     * first name, last name, and date of birth.
+     * @param event When the user clicks on the button.
+     */
     @FXML
     public void removeMember(MouseEvent event) throws IOException {
         Member personToRemove = null;
@@ -426,13 +476,22 @@ public class GymManagerController {
     //-------------------------------------------------------------------------------------------------------------------
 
 //Check In Code----------------
+    /**
+     * Used by the "Back" button in the check in menu to go back to
+     * the main menu.
+     * @param e When the user clicks on the button.
+     */
     @FXML
     public void checkInToMenu(MouseEvent e){
         menuScreenButtons.setVisible(true);
         checkInScreen.setVisible(false);
 
     }
-
+    /**
+     * Used by the check in instructor combo box to select the
+     * name of the fitness instructors.
+     * @param e When the user clicks on the combo box.
+     */
     @FXML
     public void checkInInstructorComboBoxMethod(ActionEvent e)
     {
@@ -459,7 +518,12 @@ public class GymManagerController {
         }
     }
 
-
+    /**
+     * Invoked by the "Check in" button in the check in menu; which checks in a member
+     * to a fitness class based on the information provided in the text fields. Information includes
+     * first name, last name, date of birth, instructor, location, and class type.
+     * @param a When the user clicks on the button.
+     */
     @FXML
     public void checkInMember(MouseEvent a)
     {
@@ -530,6 +594,11 @@ public class GymManagerController {
     }
 
     //Load Member Screen-------------------------------------------------------------------------
+    /**
+     * Used by the "Back" button in the load member menu to go back to
+     * the main menu.
+     * @param e When the user clicks on the button.
+     */
     @FXML
     public void loadMemBackToMenu(MouseEvent e){
     menuScreenButtons.setVisible(true);
@@ -538,6 +607,11 @@ public class GymManagerController {
 
 
 }
+    /**
+     * Used by the "Load Members" button in the load member menu; which takes a text file of members
+     * and load them into the database. The system will notify you if the file was loaded or not.
+     * @param event When the user clicks on the button.
+     */
     public void loadMembers(MouseEvent event) throws IOException{
 
         FileChooser file = new FileChooser();
@@ -575,14 +649,23 @@ public class GymManagerController {
 
 
     }
-
     //Load Classes Code
+    /**
+     * Used by the "Back" button in the load classes menu to go back to
+     * the main menu.
+     * @param e When the user clicks on the button.
+     */
     @FXML
     public void loadClassesBackToMenu(MouseEvent e) {
         menuScreenButtons.setVisible(true);
         loadClassesTextArea.clear();
         loadClassesScreen.setVisible(false);
     }
+    /**
+     * Used by the "Load classes" button in the load classes menu; which takes a text file of fitness class
+     * and load them into the database. The system will notify you if the file was loaded or not.
+     * @param event When the user clicks on the button.
+     */
     public void loadClasses(MouseEvent event) throws IOException{
 
         FileChooser file = new FileChooser();
@@ -619,6 +702,11 @@ public class GymManagerController {
 
 //Information Member Text Code
 // -------------------------------------------------------------------------
+    /**
+     * Used by the "Back" button of the member info tab in the information menu to go back to
+     * the main menu.
+     * @param e When the user clicks on the button.
+     */
     @FXML
     public void informationMemBackToMenu(MouseEvent e) {
         menuScreenButtons.setVisible(true);
@@ -626,7 +714,12 @@ public class GymManagerController {
         loadMenuMemTextArea.clear();
     }
 
-
+    /**
+     * Invoked by the combo box of member info in the information menu to
+     * select the printing method to print out the members. The methods in the combo box
+     * are print as is, by fee, by county, by name, and , by expiration.
+     * @param e When the user clicks on the combo box.
+     */
     @FXML
     public void infoMenuPrintMethod(ActionEvent e)
     {
@@ -669,13 +762,22 @@ public class GymManagerController {
 //-----------------------------------------------------------------------------------------------
 
 //
+    /**
+     * Used by the "Back" button of the class info tab in the information menu to go back to
+     * the main menu.
+     * @param e When the user clicks on the button.
+     */
     @FXML
     public void informationClassBackToMenu(MouseEvent e) {
         menuScreenButtons.setVisible(true);
         loadingMenu.setVisible(false);
         loadMenuClassTextArea.clear();
     }
-
+    /**
+     * Invoked by the combo box of the class info tab in the information menu to
+     * display the class schedules.
+     * @param e When the user clicks on the combo box.
+     */
     @FXML
     public void infoMenuClassMethod(ActionEvent e)
     {
@@ -687,8 +789,10 @@ public class GymManagerController {
     }
 
 
-
-
+    /**
+     * Closes out of the Gym Manager application.
+     * @param event When the user clicks on the Exit button
+     */
     public void closeProgram(ActionEvent event) throws IOException {
         stg.close();
     }
