@@ -47,7 +47,7 @@
    <center>
       <StackPane fx:id="menuScreens" prefHeight="264.0" prefWidth="363.0" BorderPane.alignment="CENTER">
          <children>
-            <Pane fx:id="startScreen" prefHeight="200.0" prefWidth="200.0" visible="false">
+            <Pane fx:id="startScreen" prefHeight="200.0" prefWidth="200.0">
                <children>
                   <Button fx:id="startButton" contentDisplay="CENTER" layoutX="77.0" layoutY="195.0" mnemonicParsing="false" onMouseClicked="#startGymManager" text="Start Gym Manager">
                      <font>
@@ -450,7 +450,7 @@
                   </AnchorPane>
                </items>
             </SplitPane>
-            <BorderPane fx:id="loadingMenu" prefHeight="200.0" prefWidth="200.0">
+            <BorderPane fx:id="loadingMenu" prefHeight="200.0" prefWidth="200.0" visible="false">
                <center>
                   <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
                     <tabs>
