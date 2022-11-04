@@ -250,18 +250,18 @@ public class ClassSchedule {
 
     public String displaySchedule()
     {
-        String schedule;
-        schedule = ("-Fitness Classes-\n");
+        //String schedule;
+        message = ("-Fitness Classes-\n");
         for(FitnessClass c: this.getClasses())
         {
             if(c != null) {
-                schedule += (String.format("%s - %s, %s, %s\n", c.getClassType(), c.getInstructor()
+                message += (String.format("%s - %s, %s, %s\n", c.getClassType(), c.getInstructor()
                         ,c.getTime().getTime(), c.getLocation()));
-                displayParticipants(c, schedule);
+                displayParticipants(c);
             }
         }
-        schedule += ("-end of class list-\n");
-        return schedule;
+        message += ("-end of class list-\n");
+        return message;
     }
 
     /**
@@ -270,31 +270,32 @@ public class ClassSchedule {
      * Instances of family also print out their respective guest passes remaining
      * @param currentClass Fitness class whose participants are being displayed
      */
-    public void displayParticipants(FitnessClass currentClass, String schedule)
+    public void displayParticipants(FitnessClass currentClass)
     {
         if(!currentClass.getParticipants().isEmpty()) {
-            schedule += ("- Participants -\n");
+            message += ("- Participants -\n");
             for (Member m : currentClass.getParticipants()) {
-                schedule += (m.toString()+ "\n");
+                message += (m.toString()+ "\n");
                 if (m instanceof Premium) {
-                    schedule += ("(Premium) guest passes remaining " + ((Premium) m).getGuestPasses() + "\n");
+                    message += ("(Premium) guest passes remaining " + ((Premium) m).getGuestPasses() + "\n");
                 } else if (m instanceof Family) {
-                    schedule += ("(Family) guest passes remaining " + ((Family) m).getGuestPasses()+ "\n");
+                    message += ("(Family) guest passes remaining " + ((Family) m).getGuestPasses()+
+                            "\n");
                 }
             }
         }
         if(!currentClass.getGuests().isEmpty()) {
-            schedule += ("- Guests -"+ "\n");
+            message += ("- Guests -"+ "\n");
             for (Member m : currentClass.getGuests()) {
-                schedule += (m.toString()+ "\n");
+                message += (m.toString()+ "\n");
                 if (m instanceof Premium) {
-                    schedule += ("(Premium) guest passes remaining " + ((Premium) m).getGuestPasses() +"\n");
+                    message += ("(Premium) guest passes remaining " + ((Premium) m).getGuestPasses() +"\n");
                 } else if (m instanceof Family) {
-                    schedule += ("(Family) guest passes remaining " + ((Family) m).getGuestPasses() + "\n");
+                    message += ("(Family) guest passes remaining " + ((Family) m).getGuestPasses() + "\n");
                 }
             }
         }
-        schedule += "\n";
+        message += "\n";
         //return schedule;
     }
 
@@ -411,7 +412,7 @@ public class ClassSchedule {
                                 actualMember.getFname(), actualMember.getLName(), currentClass.getClassType(),
                                 currentClass.getInstructor(),
                                 currentClass.getTime().getTime(), currentClass.getLocation()));
-                        displayParticipants(currentClass, message);
+                        displayParticipants(currentClass);
                     }
                     else{
                         message += (String.format("%s %s checking in %s, %s, %s - guest" +
@@ -428,7 +429,7 @@ public class ClassSchedule {
                         currentClass.getInstructor(), currentClass.getTime().getTime(),
                         currentClass.getLocation());
                 currentClass.addToClass(actualMember);
-                displayParticipants(currentClass, message);
+                displayParticipants(currentClass);
             }
             else if(isGuest)
             {
@@ -445,7 +446,7 @@ public class ClassSchedule {
                         currentClass.getInstructor(),
                         currentClass.getTime().getTime(), currentClass.getLocation()));
                 currentClass.addToClass(actualMember);
-                displayParticipants(currentClass, message);
+                displayParticipants(currentClass);
             }
         }
         System.out.println("here");
@@ -514,6 +515,7 @@ public class ClassSchedule {
                     "has expired\n");
         }
         else{
+            System.out.println("Here");
             return true;
         }
         return false;
@@ -550,10 +552,69 @@ public class ClassSchedule {
 
         }
 
-
-
         return false;
     }
+
+    /**
+     * Remove a valid member from their Fitness Class, will not allow drop if
+     * the member is not checked in, invalid date of birth, and if the class does not exist.
+     * This method is invoked by the run method, when the user inputs "D".
+     * @param person The person that will be dropped their fitness class.
+     */
+    public String dropOut(String[] person, boolean isGuest, MemberDatabase mlist,
+                         ClassSchedule fitnessClassDatabase)
+    {
+        String fitnessClass = person [1];
+        String instructor = person[2];
+        String location = person[3];
+        String firstName = person[4];
+        String lastName = person[5];
+        Date dob = new Date(person[6]);
+        Member newPerson = new Member(firstName, lastName, dob);
+        Member personToRemove = mlist.getMember(newPerson);
+        message = "";
+        if(!checkMemberForClass(personToRemove,  fitnessClass,  location,  instructor, true,
+                fitnessClassDatabase, mlist))
+        {
+        }
+        else if(!fitnessClassDatabase.guestIsInClass(location, fitnessClass, instructor, newPerson) && isGuest
+                || (!fitnessClassDatabase.memberIsInClass(location, fitnessClass, instructor,
+                newPerson) && !isGuest)){
+            message += (String.format("%s %s did not check in\n", personToRemove.getFname(),
+                    personToRemove.getLName()));
+        }
+        else if(fitnessClassDatabase.memberIsInClass(location, fitnessClass, instructor,
+                newPerson)|| (fitnessClassDatabase.guestIsInClass(location, fitnessClass,
+                instructor, newPerson) && isGuest)) {
+            if(!isGuest) {
+                message +=(String.format("%s %s done with the class\n",
+                        personToRemove.getFname(), personToRemove.getLName()));
+                fitnessClassDatabase.removeFromClass(personToRemove, location, instructor, fitnessClass);
+            }
+            else
+            {
+                message +=(String.format("%s %s Guest done with the class\n",
+                        personToRemove.getFname(), personToRemove.getLName()));
+                fitnessClassDatabase.removeGuestFromClass(personToRemove, location, instructor,
+                        fitnessClass);
+                ((Family) personToRemove).addGuestPass();
+            }
+
+
+        }
+        else if(!fitnessClassDatabase.memberIsInClass(location, fitnessClass, instructor,
+                newPerson)){
+            message += (String.format("%s %s is not a " + "participant in " + "%s\n", firstName,
+                    lastName, fitnessClass));
+        }
+        else {
+            message += (fitnessClass + " class does not " + "exist\n");
+        }
+        return message;
+    }
+
+
+
     private boolean checkMemberValidLocation(Member member, String location)
     {
         if(member instanceof Family)

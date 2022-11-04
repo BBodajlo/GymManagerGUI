@@ -3,13 +3,9 @@ package com.example.gymmanagergui;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
@@ -19,24 +15,26 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.Arrays;
+
 
 import static com.example.gymmanagergui.GymManagerMain.stg;
 
-
+/**
+ * GymManagerController controls of the graphic user interface
+ * for the gym manager application. It manages the action of the buttons and layouts of
+ * the application. There are menus such as main, member, check in, drop, loading, and information
+ * that are being managed.
+ * @author Blake Bodajlo, Stanley Jiang
+ */
 public class GymManagerController {
 
     private MemberDatabase memberList;
 
     private ClassSchedule fitnessClassDatabase;
 
-    GymManager gymManager = new GymManager();
     private boolean membersListLoaded;
     private boolean classesListLoaded;
 
-    @FXML
-    private Label welcomeText;
     @FXML
     private StackPane menuScreens;
     @FXML
@@ -133,7 +131,35 @@ public class GymManagerController {
     private Button checkInButton;
     @FXML
     private TextArea checkInTextArea;
+// ------------------------------------------------------------------------------
+    //Drop In Regular Area
 
+    @FXML
+    private BorderPane dropOutScreen;
+    @FXML
+    private TextField dropOutFirstName;
+    @FXML
+    private TextField dropOutLastName;
+    @FXML
+    private ComboBox dropLocationComboBox;
+    @FXML
+    private ComboBox dropInstructorComboBox;
+    @FXML
+    private RadioButton dropOutRegCardio;
+    @FXML
+    private RadioButton dropOutRegPilates;
+    @FXML
+    private RadioButton dropOutRegSpinning;
+    @FXML
+    private Button dropOutBackButton;
+    @FXML
+    private DatePicker dropOutDOB;
+    @FXML
+    private Button dropOutButton;
+    @FXML
+    private TextArea dropOutTextArea;
+    @FXML
+    private CheckBox dropOutGuestButton;
 
 
 
@@ -159,6 +185,8 @@ public class GymManagerController {
     private TextArea loadClassesTextArea;
     @FXML
     private Button loadClassesBackButton;
+    @FXML
+    private CheckBox checkInGuestButton;
 
 // ----------------------------------------------------------------------
 
@@ -184,7 +212,7 @@ public class GymManagerController {
 //Information Class Area-----------------------------------
 
     @FXML
-    private ComboBox loadMenuClassInfoCombo;
+    private Button loadMenuLoadScheduleButton;
 
     @FXML
     private final String[] printClasses = {"Schedule"};
@@ -197,7 +225,9 @@ public class GymManagerController {
 
 //-----------------------------------------------------------------------------------
 
-
+    /**
+     * Initializes the application, by creating empty databases for members and fitness classes.
+     */
     @FXML
     public void initialize()
     {
@@ -206,13 +236,17 @@ public class GymManagerController {
         membersListLoaded = false;
         classesListLoaded = false;
        loadMenuMemInfoCombo.setItems(FXCollections.observableArrayList(printMethods));
-       loadMenuClassInfoCombo.setItems(FXCollections.observableArrayList(printClasses));
+       dropInstructorComboBox.setItems(FXCollections.observableArrayList(Instructor.values()));
        //locationComboBox.setItems(FXCollections.observableArrayList(Location.values()));
        instructorComboBox.setItems(FXCollections.observableArrayList(Instructor.values()));
+
 
        // System.out.println(Location.values());
     }
 
+    /**
+     * Used by the "Start Gym Manager" button to show the main menu.
+     */
     @FXML
     public void startGymManager(){
         startScreen.setVisible(false);
@@ -221,9 +255,11 @@ public class GymManagerController {
     }
 
 
-
-
 //Main Menu ----------------------------------------------------------------------------
+    /**
+     * Used by the "Member's add" button to show the add member menu.
+     * @param event When the user clicks on the button.
+     */
     @FXML
     public void memberAddMenu(MouseEvent event) throws IOException {
 
@@ -231,6 +267,10 @@ public class GymManagerController {
         memberAddMenu.setVisible(true);
 
     }
+    /**
+     * Used by the "Member's Remove" button to show the remove member menu.
+     * @param event When the user clicks on the button.
+     */
     @FXML
     public void goToRemoveMenu(MouseEvent event) throws IOException {
 
@@ -238,11 +278,26 @@ public class GymManagerController {
         memberRemoveMenu.setVisible(true);
 
     }
+    /**
+     * Used by the "Check in" button to show the check in menu.
+     * @param event When the user clicks on the button.
+     */
     @FXML
     public void goToCheckIn(MouseEvent event) throws IOException {
 
         menuScreenButtons.setVisible(false);
         checkInScreen.setVisible(true);
+
+    }
+    /**
+     * Used by the "Loading's Classes" button to show the load class menu.
+     * @param event When the user clicks on the button.
+     */
+    @FXML
+    public void goToDropOut(MouseEvent event) throws IOException {
+
+        menuScreenButtons.setVisible(false);
+        dropOutScreen.setVisible(true);
 
     }
     @FXML
@@ -252,6 +307,10 @@ public class GymManagerController {
         loadClassesScreen.setVisible(true);
 
     }
+    /**
+     * Used by the "Loading's Member" button to show the load member menu.
+     * @param event When the user clicks on the button.
+     */
     @FXML
     public void goToLoadMembers(MouseEvent event) throws IOException {
 
@@ -259,6 +318,10 @@ public class GymManagerController {
         loadMembersScreen.setVisible(true);
 
     }
+    /**
+     * Used by the "Info Page" button to show the info page menu.
+     * @param event When the user clicks on the button.
+     */
     @FXML
     public void goToInfo(MouseEvent event) throws IOException {
 
@@ -267,6 +330,12 @@ public class GymManagerController {
 
     }
 //Add Member Menu------------------------------------------------------------------------
+    /**
+     * Invoked by the "Add" button in the add member menu; which adds a member
+     * based on the information provided in the text fields. Information includes
+     * first name, last name, location, date of birth, and type of membership.
+     * @param event When the user clicks on the button.
+     */
     public void addMember(MouseEvent event) throws IOException{
         Member newPerson = null;
         String firstName = null;
@@ -345,11 +414,20 @@ public class GymManagerController {
 
 
     }
-
+    /**
+     * Notifies the user to enter their first name, when they hover over
+     * the first name text field.
+     * @param event When the user hovers over the text field.
+     */
     public void enterStringMessage(MouseEvent event) throws IOException{
         addMemberTextArea.appendText("Enter your first name\n");
 
     }
+    /**
+     * Used by the "Back" button in the add member menu to go back to
+     * the main menu.
+     * @param event When the user clicks on the button.
+     */
     @FXML
     public void addBackToMenu(MouseEvent event) throws IOException {
     menuScreenButtons.setVisible(true);
@@ -368,6 +446,11 @@ public class GymManagerController {
 //----------------------------------------------------------------------------------------
 
     //Remove Member Code ---------------------------------------------------------------------------
+    /**
+     * Used by the "Back" button in the remove member menu to go back to
+     * the main menu.
+     * @param e When the user clicks on the button.
+     */
     @FXML
     public void removeBackToMenu(MouseEvent e){
         menuScreenButtons.setVisible(true);
@@ -377,9 +460,14 @@ public class GymManagerController {
         removeMenuLastName.clear();
         removeMenuDOB.getEditor().clear();
 
-
-
     }
+
+    /**
+     * Invoked by the "Remove" button in the remove member menu; which removes a member
+     * based on the information provided in the text fields. Information includes
+     * first name, last name, and date of birth.
+     * @param event When the user clicks on the button.
+     */
     @FXML
     public void removeMember(MouseEvent event) throws IOException {
         Member personToRemove = null;
@@ -426,13 +514,22 @@ public class GymManagerController {
     //-------------------------------------------------------------------------------------------------------------------
 
 //Check In Code----------------
+    /**
+     * Used by the "Back" button in the check in menu to go back to
+     * the main menu.
+     * @param e When the user clicks on the button.
+     */
     @FXML
     public void checkInToMenu(MouseEvent e){
         menuScreenButtons.setVisible(true);
         checkInScreen.setVisible(false);
 
     }
-
+    /**
+     * Used by the check in instructor combo box to select the
+     * name of the fitness instructors.
+     * @param e When the user clicks on the combo box.
+     */
     @FXML
     public void checkInInstructorComboBoxMethod(ActionEvent e)
     {
@@ -459,7 +556,12 @@ public class GymManagerController {
         }
     }
 
-
+    /**
+     * Invoked by the "Check in" button in the check in menu; which checks in a member
+     * to a fitness class based on the information provided in the text fields. Information includes
+     * first name, last name, date of birth, instructor, location, and class type.
+     * @param a When the user clicks on the button.
+     */
     @FXML
     public void checkInMember(MouseEvent a)
     {
@@ -483,6 +585,7 @@ public class GymManagerController {
 
         try{
             dob = new Date(checkInDOB.getValue().toString());
+            dob.getDate();
             person[6] = checkInDOB.getValue().toString();
         }
         catch(NullPointerException  | ArrayIndexOutOfBoundsException e)
@@ -524,12 +627,136 @@ public class GymManagerController {
         {
             checkInTextArea.appendText("No class type was selected");
         }
-
-        checkInTextArea.appendText(fitnessClassDatabase.checkIn(person, false, memberList, fitnessClassDatabase));
+        try {
+            checkInTextArea.appendText(fitnessClassDatabase.checkIn(person, checkInGuestButton.isSelected(),
+                    memberList,
+                    fitnessClassDatabase));
+        }
+        catch(NullPointerException f)
+        {
+            checkInTextArea.appendText("A field was not filled out correctly\n");
+        }
 
     }
 
+
+    @FXML
+    public void dropOutToMenu(MouseEvent e){
+        menuScreenButtons.setVisible(true);
+        dropOutScreen.setVisible(false);
+
+    }
+
+    @FXML
+    public void dropOutInstructorComboBoxMethod(ActionEvent e)
+    {
+
+        if(dropInstructorComboBox.getValue().equals(Instructor.EMMA))
+        {
+            dropLocationComboBox.setItems(FXCollections.observableArrayList(fitnessClassDatabase.getInstructorLocations(Instructor.EMMA)));
+        }
+        if(dropInstructorComboBox.getValue().equals(Instructor.DAVIS))
+        {
+            dropLocationComboBox.setItems(FXCollections.observableArrayList(fitnessClassDatabase.getInstructorLocations(Instructor.DAVIS)));
+        }
+        if(dropInstructorComboBox.getValue().equals(Instructor.DENISE))
+        {
+            dropLocationComboBox.setItems(FXCollections.observableArrayList(fitnessClassDatabase.getInstructorLocations(Instructor.DENISE)));
+        }
+        if(dropInstructorComboBox.getValue().equals(Instructor.JENNIFER))
+        {
+            dropLocationComboBox.setItems(FXCollections.observableArrayList(fitnessClassDatabase.getInstructorLocations(Instructor.JENNIFER)));
+        }
+        if(dropInstructorComboBox.getValue().equals(Instructor.KIM))
+        {
+            dropLocationComboBox.setItems(FXCollections.observableArrayList(fitnessClassDatabase.getInstructorLocations(Instructor.KIM)));
+        }
+    }
+
+
+    @FXML
+    public void dropOutMember(MouseEvent a)
+    {
+        String fitnessClassType = null;
+        String instructor = null;
+        String location =null;
+        String firstName = null;
+        String lastName =null;
+        Date dob = null;
+        String[] person = new String[7];
+        try{
+            firstName = dropOutFirstName.getText();
+            lastName = dropOutLastName.getText();
+            person[4] = firstName;
+            person[5] = lastName;
+        }
+        catch(NullPointerException e)
+        {
+            dropOutTextArea.appendText("Name fields are incomplete");
+        }
+
+        try{
+            dob = new Date(dropOutDOB.getValue().toString());
+            dob.getDate();
+            person[6] = dropOutDOB.getValue().toString();
+        }
+        catch(NullPointerException  | ArrayIndexOutOfBoundsException e)
+        {
+            dropOutTextArea.appendText("Date field is incorrect");
+        }
+        try{
+            instructor = dropInstructorComboBox.getValue().toString();
+            location = dropLocationComboBox.getValue().toString();
+            person[2] = instructor;
+            person[3]= location;
+        }
+        catch(NullPointerException e)
+        {
+            dropOutTextArea.appendText("Instructor or Location field is blank");
+        }
+        try{
+            if(dropOutRegPilates.isSelected())
+            {
+                fitnessClassType = "Pilates";
+                person[1] = fitnessClassType;
+            }
+            else if(dropOutRegCardio.isSelected())
+            {
+                fitnessClassType = "Cardio";
+                person[1] = fitnessClassType;
+            }
+            else if(dropOutRegSpinning.isSelected())
+            {
+                fitnessClassType = "Spinning";
+                person[1] = fitnessClassType;
+            }
+            else {
+                throw new NullPointerException();
+            }
+
+        }
+        catch(NullPointerException e)
+        {
+            dropOutTextArea.appendText("No class type was selected");
+        }
+        try {
+            dropOutTextArea.appendText(fitnessClassDatabase.dropOut(person,
+                    dropOutGuestButton.isSelected(),
+                    memberList,
+                    fitnessClassDatabase));
+        }
+        catch(NullPointerException f)
+        {
+            dropOutTextArea.appendText("A field was not filled out correctly\n");
+        }
+
+    }
     //Load Member Screen-------------------------------------------------------------------------
+    /**
+     * Used by the "Back" button in the load member menu to go back to
+     * the main menu.
+     * @param e When the user clicks on the button.
+     */
     @FXML
     public void loadMemBackToMenu(MouseEvent e){
     menuScreenButtons.setVisible(true);
@@ -538,6 +765,11 @@ public class GymManagerController {
 
 
 }
+    /**
+     * Used by the "Load Members" button in the load member menu; which takes a text file of members
+     * and load them into the database. The system will notify you if the file was loaded or not.
+     * @param event When the user clicks on the button.
+     */
     public void loadMembers(MouseEvent event) throws IOException{
 
         FileChooser file = new FileChooser();
@@ -575,14 +807,23 @@ public class GymManagerController {
 
 
     }
-
     //Load Classes Code
+    /**
+     * Used by the "Back" button in the load classes menu to go back to
+     * the main menu.
+     * @param e When the user clicks on the button.
+     */
     @FXML
     public void loadClassesBackToMenu(MouseEvent e) {
         menuScreenButtons.setVisible(true);
         loadClassesTextArea.clear();
         loadClassesScreen.setVisible(false);
     }
+    /**
+     * Used by the "Load classes" button in the load classes menu; which takes a text file of fitness class
+     * and load them into the database. The system will notify you if the file was loaded or not.
+     * @param event When the user clicks on the button.
+     */
     public void loadClasses(MouseEvent event) throws IOException{
 
         FileChooser file = new FileChooser();
@@ -619,6 +860,11 @@ public class GymManagerController {
 
 //Information Member Text Code
 // -------------------------------------------------------------------------
+    /**
+     * Used by the "Back" button of the member info tab in the information menu to go back to
+     * the main menu.
+     * @param e When the user clicks on the button.
+     */
     @FXML
     public void informationMemBackToMenu(MouseEvent e) {
         menuScreenButtons.setVisible(true);
@@ -626,42 +872,48 @@ public class GymManagerController {
         loadMenuMemTextArea.clear();
     }
 
-
+    /**
+     * Invoked by the combo box of member info in the information menu to
+     * select the printing method to print out the members. The methods in the combo box
+     * are print as is, by fee, by county, by name, and , by expiration.
+     * @param e When the user clicks on the combo box.
+     */
     @FXML
     public void infoMenuPrintMethod(ActionEvent e)
     {
        // {"Print", "Print By Fee", "Print By County", "Print By Name",
         //        "Print By Expiration"};
         //loadMenuMemTextArea.appendText(loadMenuMemInfoCombo.getValue().toString()+ "\n");
-        if(loadMenuMemInfoCombo.getValue().toString().equals("Print"))
-        {
-            loadMenuMemTextArea.clear();
-            loadMenuMemTextArea.appendText("\t--Printing by Order Added--");
-            loadMenuMemTextArea.appendText(memberList.print());
+        try {
+            if (loadMenuMemInfoCombo.getValue().toString().equals("Print")) {
+                loadMenuMemTextArea.clear();
+                loadMenuMemTextArea.appendText("\t--Printing by Order Added--");
+                loadMenuMemTextArea.appendText(memberList.print());
+            }
+            if (loadMenuMemInfoCombo.getValue().toString().equals("Print By Fee")) {
+                loadMenuMemTextArea.clear();
+                loadMenuMemTextArea.appendText("\t--Printing by Fee--");
+                loadMenuMemTextArea.appendText(memberList.printWFee());
+            }
+            if (loadMenuMemInfoCombo.getValue().toString().equals("Print By County")) {
+                loadMenuMemTextArea.clear();
+                loadMenuMemTextArea.appendText("\t--Printing by County--");
+                loadMenuMemTextArea.appendText(memberList.printByCounty());
+            }
+            if (loadMenuMemInfoCombo.getValue().toString().equals("Print By Name")) {
+                loadMenuMemTextArea.clear();
+                loadMenuMemTextArea.appendText("\t--Printing by Name--");
+                loadMenuMemTextArea.appendText(memberList.printByName());
+            }
+            if (loadMenuMemInfoCombo.getValue().toString().equals("Print By Expiration")) {
+                loadMenuMemTextArea.clear();
+                loadMenuMemTextArea.appendText("\t--Printing by Expiration--");
+                loadMenuMemTextArea.appendText(memberList.printByExpiration());
+            }
         }
-        if(loadMenuMemInfoCombo.getValue().toString().equals("Print By Fee"))
+        catch(NullPointerException f)
         {
-            loadMenuMemTextArea.clear();
-            loadMenuMemTextArea.appendText("\t--Printing by Fee--");
-            loadMenuMemTextArea.appendText(memberList.printWFee());
-        }
-        if(loadMenuMemInfoCombo.getValue().toString().equals("Print By County"))
-        {
-            loadMenuMemTextArea.clear();
-            loadMenuMemTextArea.appendText("\t--Printing by County--");
-            loadMenuMemTextArea.appendText(memberList.printByCounty());
-        }
-        if(loadMenuMemInfoCombo.getValue().toString().equals("Print By Name"))
-        {
-            loadMenuMemTextArea.clear();
-            loadMenuMemTextArea.appendText("\t--Printing by Name--");
-            loadMenuMemTextArea.appendText(memberList.printByName());
-        }
-        if(loadMenuMemInfoCombo.getValue().toString().equals("Print By Expiration"))
-        {
-            loadMenuMemTextArea.clear();
-            loadMenuMemTextArea.appendText("\t--Printing by Expiration--");
-            loadMenuMemTextArea.appendText(memberList.printByExpiration());
+            loadMemberTextArea.appendText("No member list is loaded!\n");
         }
     }
 
@@ -669,26 +921,42 @@ public class GymManagerController {
 //-----------------------------------------------------------------------------------------------
 
 //
+    /**
+     * Used by the "Back" button of the class info tab in the information menu to go back to
+     * the main menu.
+     * @param e When the user clicks on the button.
+     */
     @FXML
     public void informationClassBackToMenu(MouseEvent e) {
         menuScreenButtons.setVisible(true);
         loadingMenu.setVisible(false);
         loadMenuClassTextArea.clear();
     }
-
+    /**
+     * Invoked by the combo box of the class info tab in the information menu to
+     * display the class schedules.
+     * @param e When the user clicks on the combo box.
+     */
     @FXML
     public void infoMenuClassMethod(ActionEvent e)
     {
-        if(loadMenuClassInfoCombo.getValue().toString().equals("Schedule"))
-        {
-            loadMenuClassTextArea.clear();
-            loadMenuClassTextArea.appendText(fitnessClassDatabase.displaySchedule());
+        try{
+                loadMenuClassTextArea.clear();
+                loadMenuClassTextArea.appendText(fitnessClassDatabase.displaySchedule());
+
         }
+        catch(NullPointerException | IndexOutOfBoundsException f)
+        {
+            loadClassesTextArea.appendText("No class schedule is loaded!\n");
+        }
+
     }
 
 
-
-
+    /**
+     * Closes out of the Gym Manager application.
+     * @param event When the user clicks on the Exit button
+     */
     public void closeProgram(ActionEvent event) throws IOException {
         stg.close();
     }
