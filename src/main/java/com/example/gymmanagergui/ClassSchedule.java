@@ -235,7 +235,7 @@ public class ClassSchedule {
         String[] classDetails =  new String[4];
         Scanner fileInput = new Scanner(classes);
         while(fileInput.hasNextLine()) {
-            classDetails = fileInput.nextLine().split(" ");
+            classDetails = fileInput.nextLine().split("\\s+");
             if (!classDetails[0].equals("")) {
                 String classType = classDetails[0];
                 Instructor instructor = Instructor.valueOf(classDetails[1].toUpperCase());

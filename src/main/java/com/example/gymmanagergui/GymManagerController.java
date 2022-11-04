@@ -287,6 +287,8 @@ public class GymManagerController {
 
         menuScreenButtons.setVisible(false);
         checkInScreen.setVisible(true);
+        checkInTextArea.appendText("Please select an instructor first to determine valid " +
+                "locations\n");
 
     }
     /**
@@ -298,6 +300,8 @@ public class GymManagerController {
 
         menuScreenButtons.setVisible(false);
         dropOutScreen.setVisible(true);
+        dropOutTextArea.appendText("Please select an instructor first to determine valid " +
+                "locations\n");
 
     }
     @FXML
@@ -494,20 +498,26 @@ public class GymManagerController {
         }
         personToRemove = new Member(firstName, lastName,dob);
         boolean isInList = true;
-        for(Member m: memberList.getMlist())
-        {
-            if(m != null && personToRemove.equals(m))
-            {
-                memberList.remove(m);
-                removeMemberTextArea.appendText(firstName + " " + lastName + " " +
-                        "removed.\n");
-                isInList = false;
-                break;
+        try {
+            for (Member m : memberList.getMlist()) {
+                if (m != null && personToRemove.equals(m)) {
+                    memberList.remove(m);
+                    removeMemberTextArea.appendText(firstName + " " + lastName + " " +
+                            "removed.\n");
+                    isInList = false;
+                    break;
+                }
+                //System.out.println(memberList.printByName());
             }
+        }
+        catch(NullPointerException f)
+        {
+            removeMemberTextArea.appendText("No such person\n");
         }
         if(isInList) {
             removeMemberTextArea.appendText(firstName + " " + lastName + " is " +
                     "not in the database\n");
+            return;
         }
     }
 
@@ -523,6 +533,13 @@ public class GymManagerController {
     public void checkInToMenu(MouseEvent e){
         menuScreenButtons.setVisible(true);
         checkInScreen.setVisible(false);
+        checkInFirstName.clear();
+        checkInLastName.clear();
+        checkInDOB.getEditor().clear();
+        checkInRegCardio.setSelected(false);
+        checkInRegSpinning.setSelected(false);
+        checkInRegPilates.setSelected(false);
+        checkInGuestButton.setSelected(false);
 
     }
     /**
@@ -580,7 +597,8 @@ public class GymManagerController {
         }
         catch(NullPointerException e)
         {
-            checkInTextArea.appendText("Name fields are incomplete");
+            checkInTextArea.appendText("Name fields are incomplete\n");
+            return;
         }
 
         try{
@@ -590,7 +608,8 @@ public class GymManagerController {
         }
         catch(NullPointerException  | ArrayIndexOutOfBoundsException e)
         {
-            checkInTextArea.appendText("Date field is incorrect");
+            checkInTextArea.appendText("Date field is incorrect\n");
+            return;
         }
         try{
             instructor = instructorComboBox.getValue().toString();
@@ -600,7 +619,8 @@ public class GymManagerController {
         }
         catch(NullPointerException e)
         {
-            checkInTextArea.appendText("Instructor or Location field is blank");
+            checkInTextArea.appendText("Instructor or Location field is blank\n");
+            return;
         }
         try{
             if(checkInRegPilates.isSelected())
@@ -625,7 +645,8 @@ public class GymManagerController {
         }
         catch(NullPointerException e)
         {
-            checkInTextArea.appendText("No class type was selected");
+            checkInTextArea.appendText("No class type was selected\n");
+            return;
         }
         try {
             checkInTextArea.appendText(fitnessClassDatabase.checkIn(person, checkInGuestButton.isSelected(),
@@ -635,6 +656,7 @@ public class GymManagerController {
         catch(NullPointerException f)
         {
             checkInTextArea.appendText("A field was not filled out correctly\n");
+            return;
         }
 
     }
@@ -644,6 +666,13 @@ public class GymManagerController {
     public void dropOutToMenu(MouseEvent e){
         menuScreenButtons.setVisible(true);
         dropOutScreen.setVisible(false);
+        dropOutFirstName.clear();
+        dropOutLastName.clear();
+        dropOutDOB.getEditor().clear();
+        dropOutRegCardio.setSelected(false);
+        dropOutRegSpinning.setSelected(false);
+        dropOutRegPilates.setSelected(false);
+        dropOutGuestButton.setSelected(false);
 
     }
 
@@ -692,7 +721,7 @@ public class GymManagerController {
         }
         catch(NullPointerException e)
         {
-            dropOutTextArea.appendText("Name fields are incomplete");
+            dropOutTextArea.appendText("Name fields are incomplete\n");
         }
 
         try{
@@ -702,7 +731,7 @@ public class GymManagerController {
         }
         catch(NullPointerException  | ArrayIndexOutOfBoundsException e)
         {
-            dropOutTextArea.appendText("Date field is incorrect");
+            dropOutTextArea.appendText("Date field is incorrect\n");
         }
         try{
             instructor = dropInstructorComboBox.getValue().toString();
@@ -712,7 +741,7 @@ public class GymManagerController {
         }
         catch(NullPointerException e)
         {
-            dropOutTextArea.appendText("Instructor or Location field is blank");
+            dropOutTextArea.appendText("Instructor or Location field is blank\n");
         }
         try{
             if(dropOutRegPilates.isSelected())
@@ -737,7 +766,7 @@ public class GymManagerController {
         }
         catch(NullPointerException e)
         {
-            dropOutTextArea.appendText("No class type was selected");
+            dropOutTextArea.appendText("No class type was selected\n");
         }
         try {
             dropOutTextArea.appendText(fitnessClassDatabase.dropOut(person,

@@ -202,11 +202,11 @@ public class MemberDatabase {
     public boolean remove(Member member)
     {
         int index = 0;
-        for (Member orginal : mlist)
+        for (Member orginal : this.mlist)
         {
-            if (orginal.equals(member))
+            if (orginal != null && orginal.equals(member))
             {
-                mlist[index] = null;
+                this.mlist[index] = null;
                 this.removeHelper();
                 return true;
             }
@@ -222,22 +222,20 @@ public class MemberDatabase {
     private void removeHelper()
     {
         int index = 0;
+        boolean isEnd = false;
         boolean foundNull = false;
         for(int i = 0; i<size; i++)
         {
 
             if(foundNull){
                 mlist[i-1] = mlist[i];
+                mlist[i] = null;
             }
-            if(mlist[i] == null && foundNull == false)
+            else if(mlist[i] == null && !foundNull)
             {
                 foundNull = true;
             }
-            if(mlist[i] == null && foundNull)
-            {
-                mlist[i] = null;
-                break;
-            }
+
         }
 
     }
@@ -255,6 +253,7 @@ public class MemberDatabase {
                 count++;
             }
         }
+        System.out.println(count);
         return count;
     }
     /**
@@ -303,7 +302,7 @@ public class MemberDatabase {
         String[] person;
         Scanner input = new Scanner(members);
         while(input.hasNextLine()) {
-            person = input.nextLine().split(" ");
+            person = input.nextLine().split("\\s+");
             if(!person[0].equals(""))
             {
 
