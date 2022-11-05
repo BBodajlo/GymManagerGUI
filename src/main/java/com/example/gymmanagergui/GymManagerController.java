@@ -69,7 +69,7 @@ public class GymManagerController {
     @FXML
     private TextField addMenuLastName;
     @FXML
-    private TextField addMenuLocation;
+    private ComboBox<Location> addMenuLocationCombo;
     @FXML
     private DatePicker addMenuDOB;
     @FXML
@@ -235,6 +235,7 @@ public class GymManagerController {
         fitnessClassDatabase = new ClassSchedule();
         membersListLoaded = false;
         classesListLoaded = false;
+        addMenuLocationCombo.setItems(FXCollections.observableArrayList(Location.values()));
        loadMenuMemInfoCombo.setItems(FXCollections.observableArrayList(printMethods));
        dropInstructorComboBox.setItems(FXCollections.observableArrayList(Instructor.values()));
        //locationComboBox.setItems(FXCollections.observableArrayList(Location.values()));
@@ -372,7 +373,9 @@ public class GymManagerController {
             return;
         }
         try{
-            location = Location.setLocation(addMenuLocation.getText());
+            location = addMenuLocationCombo.getSelectionModel().getSelectedItem();
+            if(location == null)
+                throw new NullPointerException();
         }
         catch(NullPointerException e){
             addMemberTextArea.appendText("Location was invalid\n");
@@ -476,7 +479,7 @@ public class GymManagerController {
     memberAddMenu.setVisible(false);
     addMenuLastName.clear();
     addMenuFirstName.clear();
-    addMenuLocation.clear();
+    addMenuLocationCombo.getSelectionModel().select(0);
     addMenuDOB.getEditor().clear();
     addMemberStandard.setSelected(false);
     addMemberFamily.setSelected(false);

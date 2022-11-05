@@ -134,8 +134,7 @@
                               <Font size="24.0" />
                            </font>
                         </Label>
-                        <DatePicker fx:id="addMenuDOB" editable="false" prefHeight="25.0"
-                                    prefWidth="115.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                        <DatePicker fx:id="addMenuDOB" editable="false" prefHeight="25.0" prefWidth="115.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
                         <RadioButton fx:id="addMemberStandard" mnemonicParsing="false" text="Standard" GridPane.halignment="CENTER" GridPane.rowIndex="4">
                            <font>
                               <Font size="14.0" />
@@ -169,12 +168,12 @@
                               <Font size="24.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="addMenuLocation" alignment="CENTER" promptText="Location" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <Button fx:id="addMenuBackButton" alignment="TOP_LEFT" mnemonicParsing="false" onMousePressed="#addBackToMenu" text="Back" GridPane.halignment="LEFT" GridPane.valignment="TOP">
                            <font>
                               <Font size="10.0" />
                            </font>
                         </Button>
+                        <ComboBox fx:id="addMenuLocationCombo" prefHeight="25.0" prefWidth="296.0" promptText="Select Location" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
                      </children>
                   </GridPane>
                </center>
@@ -211,8 +210,7 @@
                               <Font size="24.0" />
                            </font>
                         </Label>
-                        <DatePicker fx:id="removeMenuDOB" editable="false" prefHeight="25.0"
-                                    prefWidth="329.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                        <DatePicker fx:id="removeMenuDOB" editable="false" prefHeight="25.0" prefWidth="329.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
                         <Button fx:id="removeButton" mnemonicParsing="false" onMouseClicked="#removeMember" text="Remove" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="3">
                            <font>
                               <Font size="24.0" />
@@ -315,8 +313,7 @@
                            </GridPane.margin>
                         </Button>
                         <TextArea fx:id="checkInTextArea" editable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="5" />
-                        <DatePicker fx:id="checkInDOB" editable="false" prefHeight="25.0" prefWidth="267.0"
-                                    GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <DatePicker fx:id="checkInDOB" editable="false" prefHeight="25.0" prefWidth="267.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <CheckBox fx:id="checkInGuestButton" alignment="TOP_LEFT" mnemonicParsing="false" text="Guest" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="TOP">
                            <padding>
                               <Insets top="30.0" />
@@ -406,8 +403,7 @@
                            </GridPane.margin>
                         </Button>
                         <TextArea fx:id="dropOutTextArea" editable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="5" />
-                        <DatePicker fx:id="dropOutDOB" editable="false" prefHeight="25.0"
-                                    prefWidth="266.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <DatePicker fx:id="dropOutDOB" editable="false" prefHeight="25.0" prefWidth="266.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <CheckBox fx:id="dropOutGuestButton" alignment="TOP_LEFT" mnemonicParsing="false" text="Guest" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="TOP">
                            <padding>
                               <Insets top="30.0" />
