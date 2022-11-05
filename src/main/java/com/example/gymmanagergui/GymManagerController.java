@@ -304,6 +304,10 @@ public class GymManagerController {
                 "locations\n");
 
     }
+    /**
+     * Used by the "Load's Classes" button to show the load classes menu.
+     * @param event When the user clicks on the button.
+     */
     @FXML
     public void goToLoadClasses(MouseEvent event) throws IOException {
 
@@ -576,7 +580,7 @@ public class GymManagerController {
     /**
      * Invoked by the "Check in" button in the check in menu; which checks in a member
      * to a fitness class based on the information provided in the text fields. Information includes
-     * first name, last name, date of birth, instructor, location, and class type.
+     * first name, last name, date of birth, instructor, location, guest, and class type.
      * @param a When the user clicks on the button.
      */
     @FXML
@@ -661,7 +665,11 @@ public class GymManagerController {
 
     }
 
-
+    /**
+     * Used by the "Back" button in the drop out menu to go back to
+     * the main menu.
+     * @param e When the user clicks on the button.
+     */
     @FXML
     public void dropOutToMenu(MouseEvent e){
         menuScreenButtons.setVisible(true);
@@ -676,6 +684,11 @@ public class GymManagerController {
 
     }
 
+    /**
+     * Used by the check in instructor combo box to select the
+     * name of the fitness instructors.
+     * @param e When the user clicks on the combo box.
+     */
     @FXML
     public void dropOutInstructorComboBoxMethod(ActionEvent e)
     {
@@ -702,7 +715,12 @@ public class GymManagerController {
         }
     }
 
-
+    /**
+     * Invoked by the "Drop out" button in the drop out menu; which drops a member
+     * from fitness class based on the information provided in the text fields. Information includes
+     * first name, last name, date of birth, instructor, location, guest, and class type.
+     * @param a When the user clicks on the drop out button.
+     */
     @FXML
     public void dropOutMember(MouseEvent a)
     {
