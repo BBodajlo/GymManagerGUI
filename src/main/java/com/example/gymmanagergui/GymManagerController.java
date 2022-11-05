@@ -344,7 +344,7 @@ public class GymManagerController {
      * first name, last name, location, date of birth, and type of membership.
      * @param event When the user clicks on the button.
      */
-    public void addMember(MouseEvent event) throws IOException{
+    public void addMember(MouseEvent event) throws Exception {
         Member newPerson = null;
         String firstName = null;
         String lastName = null;
@@ -353,6 +353,10 @@ public class GymManagerController {
         try{
             firstName = addMenuFirstName.getText();
             lastName = addMenuLastName.getText();
+            if(addMenuFirstName.getText().equals("") || addMenuLastName.getText().equals(""))
+            {
+                throw new NullPointerException();
+            }
         }
         catch(NullPointerException e)
         {
@@ -396,6 +400,17 @@ public class GymManagerController {
             return;
         }
 
+        if(!checkIsChar(firstName))
+        {
+            addMemberTextArea.appendText("First name cannot consist of numbers\n");
+            return;
+        }
+        if(!checkIsChar(lastName))
+        {
+            addMemberTextArea.appendText("Last name cannot consist of numbers\n");
+            return;
+        }
+
         if(dob.isValid() && dob.isAdult() && memberList.find(newPerson) == -1){
             memberList.add(newPerson);
             addMemberTextArea.appendText(String.format("%s %s has been added\n",
@@ -418,6 +433,25 @@ public class GymManagerController {
             addMemberTextArea.appendText(("DOB " + dob.getDate() + " Invalid " +
                     "calendar date!\n"));
         }
+
+
+
+    }
+    private static boolean checkIsChar(String fName)
+    {
+
+        int numOfStrings = 0;
+        char[] name = fName.toCharArray();
+
+                for(int i = 0; i < name.length; i++)
+                {
+                    if(Character.isDigit(name[i]))
+                        return false;
+                }
+                return true;
+
+
+
 
 
 
@@ -740,6 +774,7 @@ public class GymManagerController {
         catch(NullPointerException e)
         {
             dropOutTextArea.appendText("Name fields are incomplete\n");
+            return;
         }
 
         try{
@@ -750,6 +785,7 @@ public class GymManagerController {
         catch(NullPointerException  | ArrayIndexOutOfBoundsException e)
         {
             dropOutTextArea.appendText("Date field is incorrect\n");
+            return;
         }
         try{
             instructor = dropInstructorComboBox.getValue().toString();
@@ -760,6 +796,7 @@ public class GymManagerController {
         catch(NullPointerException e)
         {
             dropOutTextArea.appendText("Instructor or Location field is blank\n");
+            return;
         }
         try{
             if(dropOutRegPilates.isSelected())
@@ -785,6 +822,7 @@ public class GymManagerController {
         catch(NullPointerException e)
         {
             dropOutTextArea.appendText("No class type was selected\n");
+            return;
         }
         try {
             dropOutTextArea.appendText(fitnessClassDatabase.dropOut(person,
@@ -795,6 +833,7 @@ public class GymManagerController {
         catch(NullPointerException f)
         {
             dropOutTextArea.appendText("A field was not filled out correctly\n");
+            return;
         }
 
     }
@@ -842,7 +881,7 @@ public class GymManagerController {
                 loadMemberTextArea.appendText("No file was found");
                 return;
             }
-            catch(NumberFormatException | NullPointerException | ArrayIndexOutOfBoundsException e)
+            catch(NullPointerException | ArrayIndexOutOfBoundsException | IllegalArgumentException e)
             {
                 loadMemberTextArea.appendText("File not formatted correctly\n");
             }
@@ -890,7 +929,7 @@ public class GymManagerController {
                 loadClassesTextArea.appendText("No file was found");
                 return;
             }
-            catch(NumberFormatException | NullPointerException | ArrayIndexOutOfBoundsException e)
+            catch(NullPointerException | ArrayIndexOutOfBoundsException | IllegalArgumentException e)
             {
                 loadClassesTextArea.appendText("File not formatted correctly\n");
             }
@@ -967,7 +1006,7 @@ public class GymManagerController {
 
 //-----------------------------------------------------------------------------------------------
 
-//
+//Information classes code
     /**
      * Used by the "Back" button of the class info tab in the information menu to go back to
      * the main menu.
@@ -999,7 +1038,7 @@ public class GymManagerController {
 
     }
 
-
+//-----------------------------------------------------------------------------------------
     /**
      * Closes out of the Gym Manager application.
      * @param event When the user clicks on the Exit button
